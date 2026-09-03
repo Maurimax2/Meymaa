@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مور تيفي | MOOR TV — الترفيه بلا حدود.</title>
+<meta name="description" content="مور تيفي — أفلام ومسلسلات وأكثر من 20,000 قناة مباشرة وكل البطولات الكروية بجودة 4K. اشتراك يبدأ من 500 أوقية، وحتى نافذتين في وقت واحد.">
+<meta name="theme-color" content="#06070e">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_MR">
+<meta property="og:title" content="مور تيفي — الترفيه بلا حدود.">
+<meta property="og:description" content="أفلام ومسلسلات وقنوات مباشرة وكل البطولات الكروية بجودة 4K. يبدأ من 500 أوقية.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200..900&family=Big+Shoulders+Display:wght@500..900&display=swap" rel="stylesheet">
+<link rel="icon" href="__LOGO_URI__">
+<style>
+/* ==========================================================
+   MOOR TV
+   Dark the whole way down. Where MAURIMAX runs dark → light →
+   dark and separates sections by flipping the ground, this page
+   never leaves the dark: sections are told apart by elevation —
+   #06070e base, a lifted indigo panel, a blue field — the way a
+   television interface is. Blue leads, violet is the atmosphere.
+   Arabic is the default language; French via the header toggle.
+   ========================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root{
+  /* Dark grounds — blue-black, not neutral black */
+  --ink:#06070e;
+  --ink-2:#0e1330;
+  --plum:#1a1150;          /* the violet in the atmosphere */
+  --violet:#5b21b6;
+  --violet-2:#8b5cf6;
+  --magenta:#3b1d8f;       /* deep indigo, the second glow */
+  /* Surfaces. There is no light ground on this site — `--paper` is the
+     base and `--paper-2` the lifted panel, so every rule written against
+     them stays correct without being special-cased. */
+  --paper:#06070e;
+  --paper-2:#0d1129;
+  --line:rgba(255,255,255,.11);
+  --line-dark:rgba(255,255,255,.14);
+  --ink-text:#f2f5ff;
+  --muted:rgba(255,255,255,.56);
+  --muted-dark:rgba(255,255,255,.6);
+  /* Accent — blue leads, violet supports */
+  --orange:#2f6bff;
+  --orange-2:#6ba2ff;
+  /* Type */
+  --ui:'Alexandria',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --head:var(--ui);
+  --disp:'Big Shoulders Display','Archivo Narrow','Arial Narrow',sans-serif;
+  /* Radius — deliberately tiny. A pill is reserved for one CTA. */
+  --r:3px;
+  color-scheme:dark;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:84px;overflow-x:clip;background:var(--paper)}
+body{background:var(--paper);color:var(--ink-text);font-family:var(--ui);font-size:15px;
+  line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3,h4{font-family:var(--head);line-height:1.15;font-weight:700;letter-spacing:-.01em}
+html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3{line-height:1.35;letter-spacing:0}
+p{text-wrap:pretty}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,textarea{font:inherit}
+img,svg{display:block;max-width:100%}
+/* Any element given a display keeps it when [hidden] is set, so the attribute
+   silently stops working on buttons and flex items. Make it authoritative. */
+[hidden]{display:none!important}
+::selection{background:var(--orange);color:#fff}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--paper-2)}
+::-webkit-scrollbar-thumb{background:#2b3566;border:3px solid var(--paper-2);border-radius:99px}
+/* Latin tracking breaks Arabic letter joining, so it is opt-in. */
+html[dir=rtl] :not(.keep){letter-spacing:normal}
+.keep{letter-spacing:.04em}
+.num{font-family:var(--disp);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+
+/* ——— Measure ——— */
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding:0 18px}
+@media(min-width:700px){.wrap{padding:0 40px}}
+@media(min-width:1200px){.wrap{padding:0 56px}}
+.pad{padding:60px 0}
+@media(min-width:700px){.pad{padding:96px 0}}
+@media(min-width:1100px){.pad{padding:120px 0}}
+.dark{background:var(--ink);color:#fff}
+.tint{background:var(--paper-2)}
+
+/* ——— Section headers ———
+   A label, a title, and a line of support. No numbering: these sections
+   are not a sequence, so numbering them would be decoration. */
+.lbl{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;
+  color:var(--orange);text-transform:uppercase}
+.lbl.keep{letter-spacing:.18em}
+.lbl::before{content:'';width:22px;height:1px;background:currentColor;opacity:.55}
+.shead{max-width:640px}
+.shead h2{margin-top:16px;font-size:clamp(1.55rem,3.4vw,2.5rem)}
+.shead>p{margin-top:14px;font-size:15px;color:var(--muted);max-width:520px}
+.dark .shead>p{color:var(--muted-dark)}
+.sheadRow{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px}
+.hl{color:var(--orange-2)}
+/* One flat marker block, used sparingly. */
+.mark{position:relative;display:inline-block;padding:0 .16em;color:#fff;z-index:0}
+.mark::before{content:'';position:absolute;inset:.1em -.02em .12em;background:var(--violet);
+  border-radius:2px;z-index:-1}
+.mark.o::before{background:var(--orange)}
+
+/* ——— Buttons — square by default; one pill for the primary action ——— */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  height:48px;padding:0 24px;border-radius:var(--r);font-size:14px;font-weight:600;
+  overflow:hidden;white-space:nowrap;transition:background .22s,color .22s,border-color .22s,transform .12s}
+.btn:active{transform:translateY(1px)}
+.btn-lg{height:56px;padding:0 30px;font-size:15px}
+.btn-sm{height:40px;padding:0 18px;font-size:13px}
+.btn-full{width:100%}
+.btn-v{background:var(--violet);color:#fff}
+.btn-v:hover{background:#4c1d95}
+.btn-o{background:var(--orange);color:#fff}
+.btn-o:hover{background:#1d54d8}
+/* The single pill: the page's primary call to action. */
+.btn-pill{border-radius:99px;background:#fff;color:var(--ink)}
+.btn-pill:hover{background:var(--orange);color:#fff}
+.btn-line,.btn-line.on-dark{border:1px solid var(--line-dark);color:#fff}
+.btn-line:hover,.btn-line.on-dark:hover{background:#fff;color:var(--ink)}
+.btn-ghost{border:1px solid var(--line);color:var(--ink-text)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange-2)}
+/* On a page with no light ground, a white-on-dark hover has to invert to the
+   ink, not to white text on a white field. One rule, used by every icon
+   button on the page. */
+.inv:hover{background:#fff;border-color:#fff;color:var(--ink)}
+.btn-wa{background:#12a150;color:#fff}
+.btn-wa:hover{background:#0e8a44}
+.btn .rip{position:absolute;width:0;height:0;border-radius:99px;background:rgba(255,255,255,.32);
+  transform:translate(-50%,-50%);pointer-events:none;animation:rip .55s ease-out forwards}
+@keyframes rip{to{width:380px;height:380px;opacity:0}}
+html[dir=rtl] .flip{transform:scaleX(-1)}
+
+/* ——— Reveal ——— */
+.rev{opacity:0;transform:translateY(18px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rev.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}}
+
+/* ——— Skip link & scroll progress ——— */
+#skip{position:fixed;top:-100px;inset-inline-start:16px;z-index:200;padding:12px 20px;
+  background:var(--ink);color:#fff;border-radius:var(--r);font-size:14px;transition:top .2s}
+#skip:focus{top:14px}
+#prog{position:fixed;top:0;inset-inline:0;height:2px;background:var(--orange);z-index:80;
+  transform:scaleX(0);transform-origin:right}
+html[dir=ltr] #prog{transform-origin:left}
+
+/* ——— Header ———
+   One bar, one control cluster. Transparent over the hero, then a smoked
+   glass bar with a hairline once it leaves — the page never goes light,
+   so the bar darkens rather than inverting. */
+header{position:fixed;inset-inline:0;top:0;z-index:75;color:#fff;
+  transition:background .35s,color .35s,border-color .35s}
+header::after{content:'';position:absolute;inset-inline:0;bottom:0;height:1px;
+  background:var(--line);opacity:0;transition:opacity .35s}
+/* Over the hero the bar sits on moving poster art, so it carries its own
+   scrim; it fades out once the solid bar takes over. */
+header::before{content:'';position:absolute;inset-inline:0;top:0;height:140px;z-index:-1;
+  background:linear-gradient(to bottom,rgba(6,7,14,.85),transparent);
+  transition:opacity .35s;pointer-events:none}
+header.stuck::before{opacity:0}
+header.stuck{background:rgba(6,7,14,.78);backdrop-filter:blur(18px) saturate(150%)}
+header.menu-open,header.stuck.menu-open{background:none;backdrop-filter:none;color:#fff}
+header.menu-open::after{opacity:0}
+header.stuck::after{opacity:1}
+#bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:58px}
+@media(min-width:900px){#bar{height:70px}}
+.brand{display:inline-flex;align-items:center;gap:9px;flex-shrink:0}
+.brand img{width:30px;height:30px}
+@media(min-width:900px){.brand img{width:34px;height:34px}}
+.brand b{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:.03em;line-height:1}
+@media(min-width:900px){.brand b{font-size:24px}}
+.brand b i{font-style:normal;color:var(--orange);margin-inline-start:.14em}
+nav.main{display:none;align-items:center;gap:2px}
+@media(min-width:1000px){nav.main{display:flex}}
+nav.main a{position:relative;padding:8px 14px;font-size:13.5px;font-weight:500;opacity:.72;
+  transition:opacity .2s,color .2s}
+nav.main a:hover{opacity:1;color:var(--orange)}
+/* The control cluster: text and icons on one hairline-divided strip.
+   No outlined circles. */
+.tools{display:flex;align-items:center;gap:0;flex-shrink:0}
+.tool{display:flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 12px;
+  font-size:12px;font-weight:600;color:inherit;opacity:.82;transition:opacity .2s,color .2s;position:relative}
+.tool:hover{opacity:1;color:var(--orange)}
+.tool+.tool::before{content:'';position:absolute;inset-inline-start:0;top:9px;bottom:9px;width:1px;
+  background:currentColor;opacity:.22}
+#count{display:none;font-family:var(--disp);font-weight:800;font-size:11px;line-height:1;
+  min-width:16px;height:16px;align-items:center;justify-content:center;border-radius:99px;
+  background:var(--orange);color:#fff}
+#count.on{display:inline-flex}
+#navcta{display:none;margin-inline-start:14px;border:1px solid currentColor;
+  background:none;color:inherit;opacity:.9}
+#navcta:hover{background:currentColor;opacity:1}
+#navcta:hover span{mix-blend-mode:difference;filter:invert(1)}
+@media(min-width:1000px){#navcta{display:inline-flex}}
+#burger{display:flex}
+@media(min-width:1000px){#burger{display:none}}
+
+/* ——— Mobile menu ——— */
+#menu{position:fixed;inset:0;z-index:70;background:var(--ink);color:#fff;
+  opacity:0;visibility:hidden;transition:opacity .3s;overflow-y:auto}
+#menu.on{opacity:1;visibility:visible}
+#menu .inner{padding-top:94px;padding-bottom:48px}
+#menuList a{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:20px 0;border-bottom:1px solid var(--line-dark);font-size:22px;font-weight:600}
+#menuList a span{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--orange);opacity:.8}
+
+/* ==========================================================
+   HERO — a centred stage, not a two-column split.
+   The whole wall of key art is the background, raked and sliding
+   behind everything; the type sits in the middle of the screen;
+   the two figures stand at the bottom corners and walk out of
+   the section. Nothing is boxed.
+   ========================================================== */
+#hero{position:relative;background:var(--ink);color:#fff;overflow:hidden;isolation:isolate;
+  display:flex;flex-direction:column;justify-content:flex-end;min-height:92svh}
+@media(min-width:900px){#hero{min-height:100svh}}
+.heroBg{position:absolute;inset:0;z-index:0;pointer-events:none}
+/* Atmosphere: violet from above, blue from below, over violet-black. */
+/* A flat knock-back over the whole wall plus a pool of shadow under the type.
+   The pool is deliberately tight: a wide one blacked out the middle row and
+   the wall read as having a hole in it. Everything outside the type block
+   keeps its posters. */
+.heroBg .glow{position:absolute;inset:0;z-index:2;
+  background:
+    radial-gradient(ellipse 62% 52% at 72% 8%,rgba(139,92,246,.42),transparent 68%),
+    radial-gradient(ellipse 52% 46% at 14% 88%,rgba(47,107,255,.42),transparent 66%),
+    radial-gradient(ellipse 54% 50% at 50% 54%,rgba(6,7,14,.86),rgba(6,7,14,.4) 58%,transparent 88%),
+    linear-gradient(to top,rgba(6,7,14,.72),rgba(6,7,14,.1) 20%,transparent 34%),
+    linear-gradient(rgba(6,7,14,.34),rgba(6,7,14,.34))}
+/* The raked wall — the whole hero. Three rows of key art at poster size,
+   sliding at three speeds in alternating directions, so the library itself
+   is the composition rather than something behind one.
+
+   The rows are deliberately taller than the frame and centred: sized to fit
+   exactly, the gaps between them line up into a visible empty band once the
+   rake tilts them. Overfilling crops the top and bottom rows instead, which
+   is what makes the wall read as continuous. `--pw` is the poster width and
+   everything else follows from it, so resizing the wall is one number. */
+.heroWall{--pw:190px;direction:ltr;
+  position:absolute;inset:-22% -24%;z-index:1;display:grid;gap:6px;
+  align-content:center;transform:rotate(-9deg);opacity:.6;
+  -webkit-mask-image:radial-gradient(ellipse 92% 88% at 50% 50%,#000 46%,transparent 92%);
+  mask-image:radial-gradient(ellipse 92% 88% at 50% 50%,#000 46%,transparent 92%)}
+@media(min-width:700px){.heroWall{--pw:250px}}
+@media(min-width:1200px){.heroWall{--pw:310px}}
+/* Each row is laid down twice and travels exactly half its width, so the loop
+   closes on itself: the motion never stops and never jumps.
+   `direction:ltr` on the wall is load-bearing, not tidiness. Each row is
+   `max-content` wide — far wider than its grid area — so it is placed at the
+   area's inline start; under RTL that is the right edge, and a row translated
+   -50% then walks clean off the left of the screen and disappears. It has to
+   sit on the container, not the row: direction placed on the row governs its
+   contents, not where the grid puts it. The wall carries no text, so it
+   always lays out left-to-right and both keyframes behave the same either
+   way. */
+.heroWall .r{display:flex;gap:6px;width:max-content;
+  animation:wallA 96s linear infinite}
+.heroWall .r:nth-child(2){animation-name:wallB;animation-duration:132s}
+.heroWall .r:nth-child(3){animation-duration:112s}
+.heroWall img{width:var(--pw);height:calc(var(--pw) * 1.5);object-fit:cover;
+  border-radius:var(--r);flex-shrink:0;background:#0a0f22}
+@keyframes wallA{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes wallB{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.heroWall .r{animation:none}}
+/* Film grain keeps the gradient from reading as flat CSS. */
+.heroBg .grain{position:absolute;inset:0;z-index:3;opacity:.4;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+
+/* — The statement — centred in the moving wall — */
+.heroInner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:96px 0 76px}
+@media(min-width:700px){.heroInner{padding:110px 0 90px}}
+@media(min-width:900px){.heroInner{padding:116px 0 100px}}
+/* The wordmark already sits in the header two lines above, so the headline
+   opens the section on its own — and takes the room that frees up. */
+#hero h1{font-size:clamp(2.5rem,9.2vw,6.4rem);font-weight:800;letter-spacing:-.025em;
+  max-width:16ch;text-shadow:0 6px 34px rgba(6,7,14,.9)}
+html[dir=rtl] #hero h1{letter-spacing:0;line-height:1.18}
+/* Latin sets far wider than Arabic at the same size, and the French headline
+   is a longer sentence, so it takes a step down rather than running to five
+   lines. Same reason line-height and tracking are already scoped by dir. */
+html[dir=ltr] #hero h1{font-size:clamp(2.3rem,7.4vw,5rem)}
+/* Set one word to a line: stacked, it reads as a mark rather than a sentence,
+   so it sits tighter than the line above it. */
+#hero h1 .l2{display:block;margin-top:.1em;color:var(--orange-2);line-height:1.04}
+#hero h1 .l2 span{display:block}
+.heroSub{margin-top:18px;max-width:44ch;font-size:14.5px;color:rgba(255,255,255,.7)}
+@media(min-width:900px){.heroSub{font-size:16px}}
+.heroAct{margin-top:30px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
+.heroPrice{display:inline-flex;align-items:baseline;gap:7px;
+  padding-inline-start:16px;border-inline-start:1px solid var(--line-dark)}
+.heroPrice .l{font-size:11px;color:rgba(255,255,255,.55)}
+.heroPrice .n{font-family:var(--disp);font-weight:800;font-size:30px;line-height:1;color:#fff}
+/* The feature line sits on a hairline rule under the type — a rail across the
+   stage, not chips beside the copy. */
+.heroPills{margin-top:34px;display:flex;flex-wrap:wrap;justify-content:center;gap:0;
+  padding-top:20px;border-top:1px solid var(--line-dark);width:min(100%,720px)}
+.heroPills span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;
+  color:rgba(255,255,255,.62);padding:4px 16px}
+.heroPills i{width:4px;height:4px;background:var(--orange)}
+/* A scroll cue, since the hero now fills the screen with nothing below the fold. */
+.heroCue{position:absolute;z-index:2;bottom:14px;inset-inline-start:50%;transform:translateX(-50%);
+  width:1px;height:42px;background:linear-gradient(to bottom,transparent,var(--orange-2));
+  opacity:.7}
+@media(max-width:899px){.heroCue{display:none}}
+
+/* ——— Marquee ——— */
+.band{background:var(--ink);color:#fff;overflow:hidden;padding:13px 0;
+  border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+.band .track{display:flex;width:max-content;animation:march 44s linear infinite}
+html[dir=rtl] .band .track{animation-name:marchR}
+@keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes marchR{from{transform:translateX(0)}to{transform:translateX(50%)}}
+@media(prefers-reduced-motion:reduce){.band .track{animation:none}}
+.band .it{display:inline-flex;align-items:center;gap:16px;padding:0 16px;font-size:12px;
+  font-weight:500;color:rgba(255,255,255,.82);white-space:nowrap}
+.band .it em{width:4px;height:4px;background:var(--orange);font-style:normal;flex-shrink:0}
+.band .it img{width:22px;height:22px;object-fit:contain;flex-shrink:0;padding:2px;
+  background:rgba(255,255,255,.88);border-radius:3px}
+
+/* ==========================================================
+   STATISTICS — a scoreboard. One band the full width of the page,
+   the figures side by side under a single rule, read across in one
+   line rather than down a stepped column.
+   ========================================================== */
+.figWrap{display:grid;gap:34px}
+.figLead{max-width:760px}
+.figLead h2{margin-top:16px;font-size:clamp(1.6rem,4vw,2.7rem)}
+.figLead p{margin-top:14px;font-size:15px;color:var(--muted);max-width:46ch}
+.figBand{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+@media(min-width:900px){.figBand{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.figRow{padding:26px 20px 24px;border-inline-start:1px solid var(--line);
+  transition:background .3s}
+.figRow:hover{background:rgba(47,107,255,.06)}
+/* Only the leading cell of each row loses its divider, so the grid does not
+   grow a stray hairline at the page edge when it reflows to two columns. */
+.figRow:nth-child(odd){border-inline-start:0}
+@media(min-width:900px){.figRow:nth-child(odd){border-inline-start:1px solid var(--line)}
+  .figRow:first-child{border-inline-start:0}}
+.figRow .n{display:block;font-family:var(--disp);font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.2rem);line-height:.86;color:#fff;
+  font-variant-numeric:tabular-nums}
+.figRow .tx{display:block;margin-top:14px;min-width:0}
+.figRow .tx b{display:block;font-size:14px;font-weight:700}
+.figRow .tx span{display:block;margin-top:3px;font-size:12.5px;color:var(--muted)}
+
+/* ==========================================================
+   OFFERS — a shelf, not a table. The subscriptions sit in a
+   horizontal rail that drifts on its own and stops the moment
+   you touch it, each one a card with a figure standing in a
+   colour of its own. The colour is a ladder: blue at one month
+   through to violet at fifteen, with the two-screen terms in
+   cyan so they read as a different product rather than a
+   longer one.
+   ========================================================== */
+.railwrap{position:relative;margin-top:44px}
+.rail{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;
+  padding:4px 2px 6px;-webkit-overflow-scrolling:touch}
+.rail::-webkit-scrollbar{display:none}
+.railbtn{position:absolute;top:44%;z-index:4;width:38px;height:38px;transform:translateY(-50%);
+  display:none;align-items:center;justify-content:center;background:rgba(6,7,14,.82);
+  backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:99px;color:#fff;
+  transition:opacity .2s,background .2s,border-color .2s}
+@media(min-width:900px){.railbtn{display:flex}}
+.railbtn:hover{background:#fff;border-color:#fff;color:var(--ink)}
+.railbtn.prev{inset-inline-start:-22px}
+.railbtn.next{inset-inline-end:-22px}
+.railbtn.off{opacity:0;pointer-events:none}
+html[dir=rtl] .railbtn svg{transform:scaleX(-1)}
+
+/* — One offer card — */
+.oc{--c1:#1e3a8a;--c2:#2f6bff;
+  position:relative;flex:0 0 246px;display:flex;flex-direction:column;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper-2);
+  transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .4s}
+@media(min-width:700px){.oc{flex-basis:286px}}
+.oc:hover{transform:translateY(-6px);border-color:var(--c2);
+  box-shadow:0 24px 46px -22px var(--c2)}
+/* The art panel: a footballer and a screen character stand together in the
+   card's own colour, cropped by it, then fade into the body so there is no
+   seam to line up. `isolation` keeps the panel's own stacking to itself so
+   the flag and the body still paint over all of it. */
+.oc .art{position:relative;height:206px;overflow:hidden;isolation:isolate;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:linear-gradient(168deg,var(--c1),#080b1c 76%)}
+@media(min-width:700px){.oc .art{height:238px}}
+.oc .art .lit{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 84% 64% at 50% 4%,var(--c2),transparent 68%);opacity:.5}
+/* The pair is laid out, not positioned. The renders run from 0.30 to 0.78 of
+   their height, so any fixed inset that frames one of them crops another;
+   centring the two as flex items keeps every pairing inside the card, and the
+   negative margin is what makes them stand together rather than apart. */
+.oc .art>img{position:relative;z-index:2;flex:0 0 auto;width:auto;max-width:none;
+  object-fit:contain;object-position:bottom center}
+/* Both stand at the same height. Sizing the character down read as the
+   screen half of the offer mattering less than the football half. */
+/* Both stand at the same *apparent* size, which is not the same box height —
+   see FIGURE_FIT. `--h` scales against the base and `--dy` drops the figure
+   so the crop lands on the chest instead of lopping off the head; the
+   transform is layout-neutral, so the flex line is unaffected by it. */
+.oc .art>img{height:calc(94% * var(--h,1));transform:translateY(var(--dy,0%));
+  filter:drop-shadow(0 16px 22px rgba(0,0,0,.65))}
+.oc .art>img.a{z-index:3}
+.oc .art>img.b{margin-inline-end:-7%}
+.oc .art .fade{position:absolute;z-index:5;inset-inline:0;bottom:-1px;height:44%;
+  background:linear-gradient(to top,var(--paper-2) 12%,transparent)}
+
+/* Two screens, each with someone stepping out of it — the second window drawn
+   literally rather than iconified. The figure's feet sit on the screen floor
+   and its head clears the top bezel, and the bezel is painted after the
+   figure so the frame crosses in front of it: that is the whole illusion.
+   It only holds for narrow renders — see the note on OFFER_ART. */
+.oc .screens{position:absolute;inset:0;z-index:1}
+/* The screens are wide and the figures modest, not the other way round: a
+   figure taller than about 1.6× its frame stops reading as inside it and
+   starts reading as standing next to a floating rectangle. */
+.oc .pane{position:absolute;width:146px;height:100px}
+@media(min-width:700px){.oc .pane{width:166px;height:114px}}
+.oc .pane .scr{position:absolute;inset:0;border-radius:8px;
+  background:linear-gradient(155deg,var(--c1),#04060e);
+  box-shadow:inset 0 0 34px -6px var(--c2)}
+.oc .pane img{position:absolute;inset-inline:0;margin-inline:auto;bottom:4%;
+  height:134%;width:auto;max-width:none;object-fit:contain;object-position:bottom center;
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.8))}
+.oc .pane .bez{position:absolute;inset:0;border:2.5px solid var(--c2);border-radius:9px;
+  box-shadow:0 16px 32px -12px var(--c2),0 0 0 1px rgba(255,255,255,.06) inset}
+/* Flush to the card edges: the two screens are the whole point of these cards,
+   so they take every pixel of width the card has and overlap in the middle. */
+.oc .pane.a{inset-inline-start:0;bottom:25%;transform:rotate(-5deg)}
+.oc .pane.b{inset-inline-end:0;bottom:18%;transform:rotate(5deg);z-index:2}
+/* The screens have to clear the fade or they dissolve into the card body and
+   read as open brackets rather than as screens, so these cards fade shorter.
+   The flag also swaps sides here: the raised screen sits under the corner the
+   flag normally takes, and its figure's head was landing behind the pill. */
+.oc.win .art .fade{height:22%}
+.oc.win .flag{inset-inline-start:auto;inset-inline-end:12px}
+/* The two screens splay outward from the centre, so the tilt swaps with the
+   reading direction along with their positions. */
+html[dir=rtl] .oc .pane.a{transform:rotate(5deg)}
+html[dir=rtl] .oc .pane.b{transform:rotate(-5deg)}
+.oc .flag{position:absolute;top:12px;inset-inline-start:12px;z-index:3;
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;
+  background:rgba(6,7,14,.72);backdrop-filter:blur(6px);border:1px solid var(--c2);
+  font-size:10px;font-weight:700;text-transform:uppercase;color:#fff}
+.oc .flag.keep{letter-spacing:.1em}
+.oc .body{position:relative;z-index:3;display:flex;flex-direction:column;flex:1;
+  margin-top:-30px;padding:0 18px 18px}
+.oc .dur{font-size:17px;font-weight:700}
+.oc .per{margin-top:3px;font-size:12px;color:var(--muted)}
+.oc .amt{margin-top:14px;display:flex;align-items:baseline;gap:6px}
+.oc .amt b{font-family:var(--disp);font-weight:800;font-size:3rem;line-height:.82;
+  font-variant-numeric:tabular-nums}
+.oc .amt s{text-decoration:none;font-size:11px;font-weight:600;color:var(--muted)}
+.oc .save{margin-top:9px;font-size:11.5px;font-weight:700;color:var(--c2);min-height:17px}
+.oc .go{margin-top:auto;padding-top:16px}
+/* --ct is the text that sits on --c2. White fails on the cyan pair, so those
+   two cards declare the ink instead; everything else inherits the default. */
+.oc .go .btn{background:var(--c2);color:var(--ct,#fff)}
+.oc .go .btn:hover{background:#fff;color:var(--ink)}
+/* The featured term keeps its ring at rest, not only on hover. */
+.oc.top{border-color:var(--c2);box-shadow:0 0 0 1px var(--c2) inset}
+
+/* ——— The duration meter ———
+   Fifteen segments, one per month of the longest term, lit up to this
+   offer's length. A one-month term is meant to look short beside a
+   fifteen-month one. */
+.meter{display:flex;align-items:flex-end;gap:3px;height:22px;margin-top:14px}
+.meter i{flex:1;min-width:2px;height:7px;border-radius:1px;transform-origin:bottom;
+  background:rgba(255,255,255,.12)}
+.meter i.on{height:22px;background:linear-gradient(to top,var(--c2),#fff)}
+/* The draw runs off the section reveal rather than a scroll handler, and each
+   segment waits its turn so the bar reads as filling, not appearing. */
+@media(prefers-reduced-motion:no-preference){
+  .railwrap .meter i{animation:seg .5s cubic-bezier(.16,1,.3,1) both;animation-play-state:paused}
+  .railwrap.in .meter i{animation-play-state:running;
+    animation-delay:calc(var(--i) * 40ms + 120ms)}
+  @keyframes seg{from{transform:scaleY(.18);opacity:0}to{transform:none;opacity:1}}
+}
+
+.priceNote{margin-top:22px;font-size:12.5px;color:var(--muted);max-width:60ch}
+/* The feature list is common to every offer, so it is stated once beneath the
+   shelf instead of being repeated inside every card. */
+.plansFeat{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 26px}
+.plansFeat li{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.78);
+  list-style:none}
+.plansFeat svg{flex-shrink:0;color:var(--orange-2)}
+
+/* ==========================================================
+   THE DEVICE — its own section. It is hardware, not a longer
+   subscription, so it gets a stage rather than a slot on the
+   shelf: the product large and lit, the details beside it.
+   ========================================================== */
+#device{border-bottom:1px solid var(--line)}
+.devWrap{display:grid;gap:30px;align-items:center}
+@media(min-width:900px){.devWrap{grid-template-columns:1.05fr 1fr;gap:56px}}
+.devShot{position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:320px;padding:24px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:
+    radial-gradient(ellipse 64% 58% at 50% 38%,rgba(47,107,255,.46),transparent 70%),
+    radial-gradient(ellipse 58% 50% at 10% 100%,rgba(139,92,246,.36),transparent 66%),var(--ink)}
+.devShot img{height:280px;width:auto;max-width:100%;object-fit:contain;
+  filter:drop-shadow(0 28px 36px rgba(0,0,0,.85))}
+@media(min-width:900px){.devShot{min-height:460px}.devShot img{height:410px}}
+.devHead h2{margin-top:16px;font-size:clamp(1.7rem,4vw,2.8rem)}
+.devHead>p{margin-top:14px;font-size:15px;color:var(--muted);max-width:46ch}
+.specs{margin-top:26px;border-top:1px solid var(--line)}
+.spec{display:grid;grid-template-columns:minmax(84px,auto) 1fr;gap:8px 20px;
+  padding:13px 0;border-bottom:1px solid var(--line)}
+.spec dt{font-size:12.5px;color:var(--muted)}
+.spec dd{font-size:13.5px;font-weight:600}
+.devBuy{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+.devBuy .amt{display:flex;align-items:baseline;gap:7px}
+.devBuy .amt b{font-family:var(--disp);font-weight:800;font-size:3.4rem;line-height:.82;
+  font-variant-numeric:tabular-nums}
+.devBuy .amt s{text-decoration:none;font-size:12px;font-weight:600;color:var(--muted)}
+.devBuy .term{width:100%;font-size:12.5px;color:var(--muted)}
+
+/* ==========================================================
+   FOOTBALL — the poster wall
+   ========================================================== */
+.fbHead{position:relative}
+.fbHead .anchor{display:none}
+@media(min-width:1000px){
+  .fbHead .anchor{display:block;position:absolute;bottom:-26px;inset-inline-end:0;height:290px;
+    width:auto;pointer-events:none;filter:drop-shadow(0 24px 34px rgba(0,0,0,.6))}
+}
+/* The competitions run past the edge of the page rather than sitting in a
+   grid: a full-bleed strip, always moving, paused on hover or keyboard
+   focus so a tile can actually be used. */
+/* It sits outside `.wrap` rather than being pulled out with a 100vw trick:
+   `.rev` animates `transform`, which would have fought a centring translate. */
+.poStrip{position:relative;margin-top:44px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent)}
+.poTrack{display:flex;gap:14px;width:max-content;padding:4px 7px;
+  animation:poRun 64s linear infinite}
+html[dir=rtl] .poTrack{animation-name:poRunR}
+@keyframes poRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes poRunR{from{transform:translateX(0)}to{transform:translateX(50%)}}
+.poStrip:hover .poTrack,.poStrip:focus-within .poTrack{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.poTrack{animation:none}
+  .poStrip{overflow-x:auto;scrollbar-width:none}}
+.po{position:relative;display:block;flex:0 0 232px;overflow:hidden;border-radius:var(--r);
+  background:#0a0f22;aspect-ratio:4/5;isolation:isolate;
+  transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s}
+@media(min-width:700px){.po{flex-basis:290px}}
+.po:hover,.po:focus-visible{transform:translateY(-5px);box-shadow:0 20px 40px -18px rgba(47,107,255,.7)}
+.po img.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+.po:hover img.shot{transform:scale(1.05)}
+.po .scrim{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,7,14,.92) 2%,rgba(6,7,14,.4) 32%,transparent 58%)}
+.po .cap{position:absolute;inset-inline:0;bottom:0;padding:16px;display:flex;align-items:center;
+  gap:10px;color:#fff}
+.po .cap img{flex-shrink:0;width:30px;height:30px;object-fit:contain;padding:3px;
+  background:rgba(255,255,255,.9);border-radius:4px}
+.po .cap b{display:block;font-family:var(--disp);font-weight:800;font-size:14px;line-height:1.1}
+.po .cap s{display:block;text-decoration:none;margin-top:2px;font-size:11.5px;
+  color:rgba(255,255,255,.68)}
+.po .live{position:absolute;top:12px;inset-inline-start:12px;display:inline-flex;align-items:center;
+  gap:5px;font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.12em;color:#fff;
+  text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.po .live i{width:5px;height:5px;border-radius:99px;background:#ff4242;
+  box-shadow:0 0 0 0 rgba(255,66,66,.7);animation:beat 2s ease-out infinite}
+@keyframes beat{70%{box-shadow:0 0 0 6px rgba(255,66,66,0)}100%{box-shadow:0 0 0 0 rgba(255,66,66,0)}}
+@media(prefers-reduced-motion:reduce){.po .live i{animation:none}
+  .po,.po img.shot{transition:none}.po:hover{transform:none}.po:hover img.shot{transform:none}}
+
+/* The rest of the competitions — a summary line, not a second table. */
+.leagueStrip{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
+.leagueStrip .cap{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase}
+.leagueStrip .cap.keep{letter-spacing:.16em}
+.leagueList{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+.lg{display:inline-flex;align-items:center;gap:8px}
+/* Half these marks are near-black artwork made for a white page, so they
+   get a plate to sit on rather than vanishing into the ground. */
+.lg .crest{width:26px;height:26px;object-fit:contain;flex-shrink:0;padding:3px;
+  background:rgba(255,255,255,.9);border-radius:4px}
+.lg .nm{font-family:var(--disp);font-weight:700;font-size:13.5px;color:var(--ink-text)}
+.lg .sub{display:none}
+
+/* ==========================================================
+   CONTENT RAILS
+   ========================================================== */
+/* A mosaic, not a rail. Everything on offer is on screen at once and two
+   tiles are given double width, so the block reads as a wall of programming
+   rather than a queue you have to scroll through. */
+.mosaic{margin-top:30px;display:grid;gap:10px;grid-auto-flow:dense;
+  grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:112px}
+@media(min-width:700px){.mosaic{grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-rows:130px;gap:13px}}
+@media(min-width:1100px){.mosaic{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:150px}}
+.cat{position:relative;grid-row:span 2;display:block;
+  text-align:start;padding:0;background:none;border:0;cursor:pointer;color:inherit}
+.cat.big{grid-column:span 2}
+.cat .fr{position:relative;height:100%;overflow:hidden;border-radius:var(--r);
+  background:#0a0f22;container-type:inline-size}
+.cat .fr>svg,.cat .fr>.artimg,.cat .fr>.typo{position:absolute;inset:0;width:100%;height:100%;
+  transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.cat:hover .fr>svg,.cat:hover .fr>.artimg,.cat:hover .fr>.typo{transform:scale(1.04)}
+/* Typographic poster: the name at display size, deliberately cropped. */
+.typo{overflow:hidden;background:
+  radial-gradient(ellipse 90% 60% at 75% 10%,rgba(139,92,246,.5),transparent 66%),var(--ink)}
+.typo.alt{background:
+  radial-gradient(ellipse 90% 60% at 25% 90%,rgba(47,107,255,.48),transparent 66%),var(--ink)}
+/* The word wraps inside the frame. Letting it run past the edge turned
+   neighbouring tiles into one unreadable line of fragments. */
+.typo .wm{position:absolute;inset-inline:7%;top:6%;
+  font-family:var(--disp);font-weight:900;font-size:34px;line-height:.88;
+  text-transform:uppercase;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.3)}
+/* The final size is measured and set by fitWordmarks(); this is only the
+   starting point, so the tile never flashes an oversized word. */
+@supports not (-webkit-text-stroke:1px #000){.typo .wm{color:rgba(255,255,255,.15)}}
+.typo .vig{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,7,14,.9) 6%,rgba(6,7,14,.2) 46%,transparent 72%)}
+.cat .meta{position:absolute;inset-inline:0;bottom:0;padding:14px;color:#fff;z-index:2}
+.cat .meta h3{font-size:15px;font-weight:700}
+.cat.big .meta h3{font-size:18px}
+.cat .meta .c{margin-top:2px;font-size:11.5px;color:rgba(255,255,255,.68)}
+/* The tap target is the whole tile, so it gets a visible edge on hover. */
+.cat .fr::after{content:'';position:absolute;inset:0;z-index:3;border-radius:var(--r);
+  box-shadow:inset 0 0 0 1px transparent;transition:box-shadow .25s}
+.cat:hover .fr::after,.cat:focus-visible .fr::after{box-shadow:inset 0 0 0 1.5px var(--orange)}
+
+/* Supplied images share the illustration's frame */
+.artimg{position:relative;overflow:hidden;display:block;width:100%;height:100%}
+.artimg .bed{position:absolute;inset:0}
+.artimg .vig{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,7,14,.85) 4%,rgba(6,7,14,.25) 42%,transparent 70%)}
+.artimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.artimg.cut img{object-fit:contain;object-position:center bottom;padding:6% 8% 0}
+/* A logo is not photography: show all of it, centred, on the brand ground. */
+.artimg.logo{background:
+  radial-gradient(ellipse 80% 60% at 50% 38%,rgba(47,107,255,.4),transparent 68%),var(--ink)}
+.artimg.logo img{object-fit:contain;object-position:center 42%;padding:22% 24% 30%}
+
+/* ==========================================================
+   DRIFTING POSTERS — key art as moving background texture, never
+   as a list of titles. Two rows crossing in opposite directions,
+   dimmed and masked so type stays the subject.
+   ========================================================== */
+.drift{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 74%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 74%,transparent)}
+/* Opacity on the rows, not the container, so the scrim below stays at full
+   strength and the type keeps its contrast. */
+.pdRow{display:flex;gap:12px;width:max-content;margin-bottom:12px;opacity:.2;
+  animation:pdA 90s linear infinite}
+.pdRow.b{animation-name:pdB;animation-duration:120s}
+.pdRow img{width:104px;height:156px;object-fit:cover;border-radius:var(--r);flex-shrink:0}
+.drift::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 68% at 50% 52%,rgba(6,7,14,.86),rgba(6,7,14,.4))}
+@keyframes pdA{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes pdB{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.pdRow{animation:none}}
+@media(min-width:900px){.pdRow img{width:150px;height:225px}}
+
+.railSplit{margin-top:44px;padding-top:34px;border-top:1px solid var(--line)}
+.catHead{position:relative}
+.catHead .anchor{display:none}
+@media(min-width:1000px){
+  /* He stands low enough to break into the rail below, the way the footballer
+     does in the football section, so the supporting line needs little room. */
+  .catHead .anchor{display:block;position:absolute;bottom:-86px;inset-inline-end:0;height:236px;
+    width:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 24px 34px rgba(0,0,0,.65))}
+  .catHead .sheadRow>p{padding-inline-end:130px}
+}
+
+/* ==========================================================
+   WHY — numbered blocks under a blue rule. The reasons are
+   independent of one another, so they are set as separate
+   panels rather than run together as one list.
+   ========================================================== */
+.whyWrap{position:relative}
+.whyGrid{display:grid;gap:2px;margin-top:44px;background:var(--line)}
+@media(min-width:640px){.whyGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1100px){.whyGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* The 2px grid gap is the hairline; each block paints its own ground over it,
+   which gives a rule between blocks without eight separate borders to align. */
+.feat{position:relative;padding:26px 22px 28px;background:var(--ink);
+  transition:background .3s}
+.feat::before{content:'';position:absolute;top:0;inset-inline:0;height:2px;
+  background:var(--orange);transform:scaleX(0);transform-origin:inline-start;
+  transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.feat:hover{background:#0c1128}
+.feat:hover::before{transform:scaleX(1)}
+.feat .ix{display:block;font-family:var(--disp);font-weight:800;font-size:34px;line-height:1;
+  color:var(--orange-2);opacity:.55;font-variant-numeric:tabular-nums}
+.feat h3{margin-top:16px;font-size:16.5px;font-weight:700}
+.feat p{margin-top:8px;font-size:13.5px;color:var(--muted-dark);max-width:38ch}
+/* Eight reasons in three columns leave one cell over. Rather than let the
+   grid's hairline ground show through as a stray lighter block, that cell is
+   where the figure stands. It only exists at the width where the gap does. */
+.whyCell{display:none}
+.whyCell::before{content:none}
+.whyCell:hover{background:var(--ink)}
+@media(min-width:1100px){
+  .whyCell{display:block;position:relative;overflow:visible;padding:0}
+  /* He breaks downward out of the section rather than upward into the copy
+     above him — the same move the football and content anchors make. */
+  .whyAnchor{position:absolute;bottom:-152px;inset-inline-end:2%;height:352px;width:auto;
+    pointer-events:none;opacity:.92;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
+}
+@media(max-width:1099px){.whyAnchor{display:none}}
+@media(prefers-reduced-motion:reduce){.feat::before{transition:none}}
+
+/* ==========================================================
+   REVIEWS — a wall of quotes. Everything on screen at once,
+   staggered, rather than a rail to be dragged sideways.
+   ========================================================== */
+.rvRail{margin-top:34px;display:grid;gap:2px;background:var(--line)}
+@media(min-width:700px){.rvRail{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1100px){.rvRail{grid-template-columns:repeat(3,minmax(0,1fr))}
+  /* The first quote takes two columns and sets the section's voice. */
+  .rv:first-child{grid-column:span 2}
+  .rv:first-child .q{font-size:18px}}
+.rv{padding:26px 24px 24px;background:var(--paper);transition:background .3s}
+.rv:hover{background:#0b1024}
+.rv .qm{font-family:var(--disp);font-size:44px;line-height:.7;color:var(--orange)}
+.rv .q{margin-top:14px;font-size:15px;line-height:1.65;color:var(--ink-text)}
+.rv .who{margin-top:16px;display:flex;align-items:center;gap:10px}
+.rv .av{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border-radius:99px;background:var(--violet);color:#fff;font-family:var(--disp);
+  font-size:12px;font-weight:800}
+.rv .st{display:flex;gap:2px;color:var(--orange)}
+
+/* ==========================================================
+   FAQ
+   ========================================================== */
+/* One centred column, header above and the help block below — the questions
+   get the full measure instead of being squeezed beside a sidebar. */
+.faqWrap{max-width:820px;margin:0 auto}
+.faqWrap .shead{max-width:none;text-align:center}
+.faqWrap .shead>p{margin-inline:auto}
+.faqWrap .accList{margin-top:38px}
+.faqHelp{margin-top:34px;padding-top:26px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.faqHelp p{font-size:14px;color:var(--muted);max-width:40ch}
+.faqHelp .btn>span{display:inline-flex;align-items:center;gap:9px}
+.acc{border-top:1px solid var(--line)}
+.acc:last-child{border-bottom:1px solid var(--line)}
+.acc>button{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:14px;
+  align-items:start;padding:20px 0;text-align:start}
+.acc .ix{font-family:var(--disp);font-weight:800;font-size:12px;color:var(--orange);
+  line-height:1.9;font-variant-numeric:tabular-nums}
+.acc .qq{font-size:15.5px;font-weight:600;line-height:1.5}
+.acc .pm{position:relative;width:16px;height:16px;margin-top:6px;flex-shrink:0}
+.acc .pm::before,.acc .pm::after{content:'';position:absolute;inset-inline:0;top:7.5px;height:1.5px;
+  background:var(--ink-text);transition:transform .3s}
+.acc .pm::after{transform:rotate(90deg)}
+.acc.on .pm::after{transform:rotate(0)}
+.acc .panel{overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.16,1,.3,1)}
+.acc .panel p{padding:0 30px 22px;font-size:14px;color:var(--muted);max-width:60ch}
+html[dir=rtl] .acc .panel p{padding:0 26px 22px 0}
+
+/* ==========================================================
+   CLOSING CTA + FOOTER
+   ========================================================== */
+#close{position:relative;background:var(--ink);color:#fff;overflow:hidden;isolation:isolate}
+#close .drift{z-index:0}
+#close .wrap{position:relative;z-index:1}
+#close .glow{position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 60% 70% at 78% 100%,rgba(47,107,255,.5),transparent 66%),
+             radial-gradient(ellipse 50% 60% at 12% 0%,rgba(139,92,246,.38),transparent 66%)}
+/* Centred, and the figure stands behind the type rather than beside it —
+   the last screen is a single statement, not another two-column spread. */
+.closeGrid{position:relative;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding-bottom:20px}
+#close h2{margin-top:16px;font-size:clamp(2rem,6.6vw,4rem);font-weight:800;max-width:18ch}
+#close p{margin-top:14px;font-size:15px;color:rgba(255,255,255,.72);max-width:46ch}
+#close .acts{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+/* It spans the whole section, not the text block, so the figure is sized
+   against the section's height and arrives whole rather than beheaded. */
+.closeArt{position:absolute;inset:0;z-index:0;display:flex;justify-content:center;
+  align-items:flex-end;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to top,transparent 1%,#000 26%);
+  mask-image:linear-gradient(to top,transparent 1%,#000 26%)}
+.closeArt img{height:94%;width:auto;object-fit:contain;object-position:bottom center;
+  opacity:.28;filter:drop-shadow(0 30px 36px rgba(0,0,0,.6))}
+@media(min-width:860px){.closeArt img{height:100%;opacity:.32}}
+/* The type crosses the figure, so the middle of the frame is knocked back. */
+.closeArt::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 58% 56% at 50% 44%,rgba(6,7,14,.82),transparent 74%)}
+
+footer{background:var(--ink);color:#fff;padding:56px 0 28px;border-top:1px solid var(--line-dark)}
+.fcols{display:grid;gap:34px}
+@media(min-width:760px){.fcols{grid-template-columns:2fr 1fr 1fr 1.3fr;gap:40px}}
+footer h3{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase}
+footer h3.keep{letter-spacing:.16em}
+footer ul{list-style:none;margin-top:16px;display:grid;gap:11px}
+footer ul a,footer ul li{font-size:13.5px;color:rgba(255,255,255,.62);transition:color .2s}
+footer ul a:hover{color:#fff}
+.soc{margin-top:22px;display:flex;gap:8px}
+.soc a{width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line-dark);border-radius:var(--r);color:#fff;transition:background .2s,color .2s}
+.soc a:hover{background:#fff;color:var(--ink)}
+.fbot{margin-top:44px;padding-top:22px;border-top:1px solid var(--line-dark);
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
+  font-size:11.5px;color:rgba(255,255,255,.4);line-height:1.6}
+
+/* ——— Floating WhatsApp ——— */
+#fab{position:fixed;z-index:55;inset-inline-start:16px;bottom:16px;display:flex;align-items:center;
+  gap:9px;height:50px;padding:0 18px;border-radius:99px;background:#12a150;color:#fff;
+  font-size:13px;font-weight:600;box-shadow:0 12px 28px -12px rgba(18,161,80,.8);
+  opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .3s,transform .3s,visibility .3s}
+#fab.on{opacity:1;visibility:visible;transform:none}
+#fab .lbl{display:none}
+@media(min-width:520px){#fab .lbl{display:inline}}
+
+/* ==========================================================
+   ORDER SHEET — one subscription per order, so there is no cart.
+   Step one picks a plan, step two takes the details.
+   ========================================================== */
+#modal{position:fixed;inset:0;z-index:95;visibility:hidden;overflow-y:auto}
+#modal.on{visibility:visible}
+#modal .scrim{position:fixed;inset:0;background:rgba(2,3,8,.86);backdrop-filter:blur(3px);opacity:0;transition:opacity .3s}
+#modal.on .scrim{opacity:1}
+#modal .sheet{position:relative;z-index:1;width:min(520px,calc(100% - 24px));margin:48px auto;
+  background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.9);padding:30px 24px 28px;
+  opacity:0;transform:translateY(16px);transition:opacity .32s,transform .32s}
+#modal.on .sheet{opacity:1;transform:none}
+.iconbtn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:var(--r);
+  transition:background .2s,border-color .2s,color .2s}
+.iconbtn:hover{background:#fff;border-color:#fff;color:var(--ink)}
+.step{display:none}
+.step.on{display:block}
+#modal h2{margin-top:12px;font-size:22px;font-weight:700}
+#modal .lede{margin-top:8px;font-size:13.5px;color:var(--muted);max-width:38ch}
+#modal .forCat{margin-top:14px;padding:10px 13px;border-inline-start:2px solid var(--orange);
+  background:var(--paper-2);font-size:13px;color:var(--ink-text)}
+
+/* Step one — the plans, one row each */
+.pickList{margin-top:20px;display:grid}
+.pk{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;
+  width:100%;padding:16px 0;border-top:1px solid var(--line);text-align:start;
+  transition:background .2s}
+.pk:last-child{border-bottom:1px solid var(--line)}
+.pk:hover{background:var(--paper-2)}
+.pk .nm{font-size:15px;font-weight:700}
+.pk .sub{display:block;margin-top:2px;font-size:11.5px;line-height:1.45;color:var(--muted)}
+.pk .sub em{font-style:normal;color:var(--orange);font-weight:700}
+.pk .amt{font-family:var(--disp);font-weight:800;font-size:26px;line-height:1;
+  font-variant-numeric:tabular-nums}
+.pk .amt s{display:block;text-decoration:none;font-family:var(--ui);font-weight:400;
+  font-size:10.5px;letter-spacing:.06em;color:var(--muted)}
+.pk .go{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:var(--r);color:var(--ink-text);flex-shrink:0;
+  transition:background .2s,border-color .2s,color .2s}
+/* Flip the whole icon, not the path: scaling a path about the SVG origin
+   pushes it outside the viewBox and it vanishes. */
+html[dir=rtl] .pk .go svg{transform:scaleX(-1)}
+.pk:hover .go{background:#fff;border-color:#fff;color:var(--ink)}
+.pk.best{background:rgba(47,107,255,.18);color:#fff;border:1px solid rgba(47,107,255,.5);
+  padding:16px 14px;border-radius:var(--r);margin-top:6px}
+.pk.best:hover{background:rgba(47,107,255,.28)}
+.pk.best .sub{color:rgba(255,255,255,.66)}
+.pk.best .amt s{color:rgba(255,255,255,.6)}
+.pk.best .go{border-color:rgba(255,255,255,.3);color:#fff}
+.pk.best:hover .go{background:#fff;color:var(--ink)}
+
+/* Step two — the chosen plan, then the details */
+.backBtn{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
+  padding:4px 0}
+.backBtn:hover{color:var(--ink-text)}
+.backBtn i{font-style:normal}
+html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
+.chosen{margin-top:14px;padding:16px 16px 17px;color:#fff;border-radius:var(--r);
+  background:linear-gradient(120deg,rgba(47,107,255,.28),rgba(91,33,182,.28));
+  border:1px solid rgba(47,107,255,.4);display:flex;align-items:center;gap:14px}
+.chosen .cbody{min-width:0;flex:1}
+.chosen b{display:block;font-size:16px;font-weight:700}
+.chosen span{display:block;margin-top:2px;font-size:12px;color:rgba(255,255,255,.66)}
+.chosen .cnum{font-family:var(--disp);font-weight:800;font-size:30px;line-height:1;
+  font-variant-numeric:tabular-nums;text-align:end}
+.chosen .cnum s{display:block;text-decoration:none;font-family:var(--ui);font-weight:400;
+  font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.6)}
+.field{margin-bottom:16px}
+.field .lb{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
+.field label{font-size:13px;font-weight:600}
+.field .opt{font-size:11.5px;color:var(--muted)}
+.field input,.field textarea{width:100%;padding:13px 14px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--ink);color:var(--ink-text);
+  transition:border-color .2s;font-size:14.5px}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.34)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--orange)}
+.field .err{display:none;margin-top:6px;font-size:12px;color:#ff6b5e}
+.field.bad input,.field.bad textarea{border-color:#ff6b5e}
+.field.bad .err{display:block}
+.field .hint{margin-top:6px;font-size:12px;color:var(--muted)}
+
+/* ——— Device picker ———
+   Closed until asked. Seven options laid out flat took more of the form than
+   the payment step did, for the least important choice on it. */
+.sel{position:relative}
+.selBtn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:13px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--ink);
+  color:var(--ink-text);font-size:14.5px;text-align:start;transition:border-color .2s}
+.selBtn:hover{border-color:var(--orange-2)}
+.selBtn.ph{color:rgba(255,255,255,.4)}
+.sel.open .selBtn{border-color:var(--orange)}
+.selBtn svg{flex-shrink:0;opacity:.7;transition:transform .25s}
+.sel.open .selBtn svg{transform:rotate(180deg)}
+.selList{position:absolute;z-index:6;inset-inline:0;top:calc(100% + 6px);overflow:hidden auto;
+  max-height:262px;background:#0b1024;border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:0 26px 50px -18px rgba(0,0,0,.92)}
+.selList button{display:block;width:100%;padding:12px 14px;text-align:start;font-size:14px;
+  color:rgba(255,255,255,.82);transition:background .15s,color .15s}
+.selList button+button{border-top:1px solid rgba(255,255,255,.06)}
+.selList button:hover{background:rgba(47,107,255,.18);color:#fff}
+.selList button.on{background:var(--orange);color:#fff;font-weight:600}
+
+/* ——— Payment services ———
+   Each logo is drawn for a light background, so it sits on a white plate
+   rather than being recoloured; the selected one is ringed in its own brand
+   colour, which is also the colour the number field takes below. */
+.payGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.payBtn{position:relative;display:flex;align-items:center;justify-content:center;height:62px;
+  padding:9px 12px;background:#fff;border:2px solid transparent;border-radius:9px;
+  box-shadow:0 0 0 1px var(--line);transition:box-shadow .2s,transform .15s}
+.payBtn:hover{transform:translateY(-2px)}
+.payBtn img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.payBtn.on{border-color:var(--pc);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 45%,transparent)}
+@supports not (color: color-mix(in srgb,red 50%,blue)){.payBtn.on{box-shadow:0 0 0 3px var(--pc)}}
+.payBtn.on::after{content:'✓';position:absolute;top:-8px;inset-inline-end:-8px;width:22px;height:22px;
+  display:flex;align-items:center;justify-content:center;border-radius:99px;
+  background:var(--pc);color:var(--pf);font-size:12px;font-weight:800}
+
+/* ——— The number to pay, in the service's own colours ——— */
+.payBox{margin:16px 0 18px;padding:16px;border-radius:10px;background:var(--pc);color:var(--pf)}
+.payBox .cap{font-size:11.5px;font-weight:600;opacity:.78}
+.payBox .row{margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.payBox .no{font-family:var(--disp);font-weight:800;font-size:32px;line-height:1;
+  letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.payBox .copy{margin-inline-start:auto;padding:8px 14px;border-radius:99px;font-size:12px;
+  font-weight:700;background:rgba(0,0,0,.16);color:inherit;transition:background .2s}
+.payBox .copy:hover{background:rgba(0,0,0,.28)}
+.payBox .amt{margin-top:12px;padding-top:11px;border-top:1px solid rgba(0,0,0,.16);
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px}
+.payBox .amt b{font-family:var(--disp);font-weight:800;font-size:22px}
+.payBox .note{margin-top:10px;font-size:11.5px;line-height:1.5;opacity:.82}
+
+/* ——— Payment proof ——— */
+.drop{display:block;cursor:pointer}
+.dropIn{display:flex;align-items:center;justify-content:center;gap:9px;min-height:76px;padding:14px;
+  border:1px dashed var(--line);border-radius:var(--r);font-size:13px;font-weight:600;
+  color:var(--muted);text-align:center;transition:border-color .2s,color .2s,background .2s}
+.drop:hover .dropIn{border-color:var(--orange);color:#fff}
+.dropIn img{max-height:150px;width:auto;border-radius:6px}
+.dropIn .ok{display:flex;align-items:center;gap:10px;color:#fff}
+.dropIn .ok small{display:block;margin-top:2px;font-size:11.5px;font-weight:500;color:var(--muted)}
+
+/* ——— Step three ——— */
+.sentRef{margin-top:14px;padding:11px 14px;border-radius:var(--r);
+  background:rgba(47,107,255,.16);border:1px solid rgba(47,107,255,.42);
+  font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:.08em;color:#fff}
+.sentArt{margin:18px 0;padding:14px;border:1px solid var(--line);border-radius:var(--r);
+  display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--muted)}
+.sentArt img{max-height:110px;width:auto;border-radius:6px;flex-shrink:0}
+
+/* ——— Preloader ——— */
+#pre{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;background:var(--ink);transition:opacity .6s,transform .6s}
+#pre img{width:72px;height:72px}
+#pre .w{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:.06em;color:#fff}
+#pre .w i{font-style:normal;color:var(--orange);margin-inline-start:.14em}
+#pre .bar{width:150px;height:2px;background:rgba(255,255,255,.16);overflow:hidden}
+#pre .bar i{display:block;height:100%;width:0;background:var(--orange)}
+</style>
+</head>
+<body>
+<a id="skip" href="#main" data-i="nav.skip">تخطَّ إلى المحتوى</a>
+<div id="prog"></div>
+
+<header>
+  <div class="wrap"><div id="bar">
+    <a href="#top" class="brand" aria-label="MOOR TV">
+      <img src="__LOGO_URI__" alt="" width="34" height="34">
+      <b class="keep">MOOR<i>TV</i></b>
+    </a>
+    <nav class="main" id="nav"></nav>
+    <div class="tools">
+      <button class="tool keep" id="lang" aria-label="Language"><span id="langTxt">EN</span></button>
+      <button class="tool" id="burger" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 16 16" width="17" height="17" fill="none" aria-hidden><path d="M2 4.5h12M2 11.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <a href="#plans" class="btn btn-sm" id="navcta"><span data-i="nav.cta">اشترك الآن</span></a>
+    </div>
+  </div></div>
+</header>
+<div id="menu"><div class="wrap inner"><div id="menuList"></div>
+  <a href="#plans" class="btn btn-o btn-lg btn-full" style="margin-top:32px" data-close><span data-i="nav.cta"></span></a>
+</div></div>
+
+<main id="main"><span id="top"></span>
+
+<!-- 1 — a centred stage: the library rakes past behind, the cast holds
+     the bottom corners, the statement sits between them -->
+<section id="hero">
+  <div class="heroBg" aria-hidden="true">
+    <div class="heroWall" id="heroWall"></div><span class="glow"></span><span class="grain"></span>
+  </div>
+  <div class="wrap"><div class="heroInner">
+    <h1 class="rev"><span data-i="hero.titleA"></span><span class="l2" id="heroL2"></span></h1>
+    <p class="heroSub rev" data-i="hero.subtitle"></p>
+    <div class="heroAct rev">
+      <a href="#plans" class="btn btn-pill btn-lg"><span data-i="hero.ctaPrimary"></span></a>
+      <span class="heroPrice">
+        <span class="l" data-i="hero.from"></span>
+        <span class="n" id="fromPrice">500</span>
+        <span class="l">MRU</span>
+      </span>
+    </div>
+    <div class="heroPills rev" id="heroPills"></div>
+  </div></div>
+  <span class="heroCue" aria-hidden="true"></span>
+</section>
+
+<!-- 2 — marquee -->
+<div class="band"><div class="track" id="bandTrack"></div></div>
+
+<!-- 3 — what one subscription opens -->
+<section class="pad">
+  <div class="wrap"><div class="figWrap">
+    <div class="figLead rev">
+      <span class="lbl keep" data-i="statsLead.eyebrow"></span>
+      <h2><span data-i="statsLead.titleA"></span> <span class="hl" data-i="statsLead.titleB"></span></h2>
+      <p data-i="statsLead.body"></p>
+    </div>
+    <div id="statRow" class="figBand rev"></div>
+  </div></div>
+</section>
+
+<!-- 4 — pricing -->
+<section id="plans" class="pad tint" style="scroll-margin-top:84px">
+  <div class="wrap">
+    <div class="sheadRow rev">
+      <div class="shead">
+        <span class="lbl keep" data-i="plans.eyebrow"></span>
+        <h2><span data-i="plans.titleA"></span> <span class="hl" data-i="plans.titleB"></span></h2>
+      </div>
+      <p style="max-width:36ch;font-size:14px;color:var(--muted)" data-i="plans.subtitle"></p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="railwrap rev"><div class="rail" id="planRail"></div></div>
+    <ul class="plansFeat rev" id="planFeat"></ul>
+    <p class="priceNote rev" data-i="plans.footnote"></p>
+  </div>
+</section>
+
+<!-- 5 — the device, on its own stage -->
+<section id="device" class="pad" style="scroll-margin-top:84px">
+  <div class="wrap"><div class="devWrap">
+    <div class="devShot rev"><img id="devShot" alt="" loading="lazy" decoding="async"></div>
+    <div class="devHead rev">
+      <span class="lbl keep" data-i="device.eyebrow"></span>
+      <h2><span data-i="device.titleA"></span> <span class="hl" data-i="device.titleB"></span></h2>
+      <p data-i="device.subtitle"></p>
+      <dl class="specs" id="devSpecs"></dl>
+      <div class="devBuy" id="devBuy"></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- 6 — football -->
+<section id="football" class="pad" style="scroll-margin-top:84px">
+  <div class="wrap">
+    <div class="fbHead rev">
+      <div class="shead">
+        <span class="lbl keep" data-i="football.eyebrow"></span>
+        <h2><span data-i="football.titleA"></span> <span class="mark o" data-i="football.titleB"></span></h2>
+        <p data-i="football.subtitle"></p>
+      </div>
+      <img class="anchor" id="fbAnchor" alt="" aria-hidden="true">
+    </div>
+  </div>
+  <div class="poStrip rev"><div class="poTrack" id="posterWall"></div></div>
+  <div class="wrap">
+    <div class="leagueStrip rev">
+      <span class="cap keep" data-i="football.bandTitle"></span>
+      <div class="leagueList" id="leagueList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 — content -->
+<section id="categories" class="pad tint" style="scroll-margin-top:84px">
+  <div class="wrap">
+    <div class="catHead rev">
+      <div class="sheadRow">
+        <div class="shead">
+          <span class="lbl keep" data-i="categories.eyebrow"></span>
+          <h2><span data-i="categories.titleA"></span> <span class="hl" data-i="categories.titleB"></span></h2>
+        </div>
+        <p style="max-width:32ch;font-size:14px;color:var(--muted)" data-i="categories.subtitle"></p>
+      </div>
+      <img class="anchor" id="catAnchor" alt="" aria-hidden="true">
+    </div>
+    <div class="mosaic rev" id="catGrid"></div>
+  </div>
+</section>
+
+<!-- 8 — why -->
+<section id="why" class="pad dark" style="scroll-margin-top:84px">
+  <div class="wrap"><div class="whyWrap">
+    <div class="shead rev">
+      <span class="lbl keep" data-i="why.eyebrow"></span>
+      <h2><span data-i="why.titleA"></span> <span class="hl" data-i="why.titleB"></span></h2>
+      <p data-i="why.subtitle"></p>
+    </div>
+    <div class="whyGrid rev" id="whyGrid"></div>
+  </div></div>
+</section>
+
+<!-- 9 — reviews -->
+<section id="reviews" class="pad" style="scroll-margin-top:84px">
+  <div class="wrap">
+    <div class="shead rev">
+      <span class="lbl keep" data-i="reviews.eyebrow"></span>
+      <h2><span data-i="reviews.titleA"></span> <span class="hl" data-i="reviews.titleB"></span></h2>
+    </div>
+    <div class="rvRail rev" id="rvRail"></div>
+  </div>
+</section>
+
+<!-- 10 — faq -->
+<section id="faq" class="pad tint" style="scroll-margin-top:84px">
+  <div class="wrap"><div class="faqWrap">
+    <div class="rev">
+      <div class="shead">
+        <span class="lbl keep" data-i="faq.eyebrow"></span>
+        <h2 data-i="faq.title"></h2>
+        <p data-i="faq.subtitle"></p>
+      </div>
+    </div>
+    <div id="faqList" class="accList rev"></div>
+    <div class="rev">
+      <div class="faqHelp">
+        <p data-i="faq.helpBody"></p>
+        <a class="btn btn-wa" id="faqWa" target="_blank" rel="noopener">
+          <span><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden><path d="M12.04 2C6.6 2 2.17 6.43 2.16 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.32-1.39a9.86 9.86 0 0 0 4.71 1.2h.01c5.44 0 9.87-4.43 9.88-9.88a9.8 9.8 0 0 0-2.89-6.99A9.8 9.8 0 0 0 12.04 2Zm5.8 15.68a8.2 8.2 0 0 1-5.8 2.4h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.25-4.35c0-4.53 3.69-8.21 8.22-8.21a8.16 8.16 0 0 1 5.8 2.41 8.15 8.15 0 0 1 2.4 5.81c0 4.53-3.69 8.21-8.22 8.21Z"/></svg><span dir="ltr" id="faqWaNum"></span></span>
+        </a>
+      </div>
+    </div>
+  </div></div>
+</section>
+</main>
+
+<!-- 11 — closing CTA -->
+<section id="close" class="pad">
+  <span class="glow" aria-hidden="true"></span>
+  <div class="drift" id="drift" aria-hidden="true"></div>
+  <div class="closeArt" aria-hidden="true"><img id="closeArt" alt=""></div>
+  <div class="wrap"><div class="closeGrid">
+    <div class="rev">
+      <span class="lbl keep" data-i="footer.ctaEyebrow"></span>
+      <h2><span data-i="footer.ctaA"></span> <span style="color:var(--orange-2)" data-i="footer.ctaB"></span></h2>
+      <p style="margin-inline:auto" data-i="footer.ctaSub"></p>
+      <div class="acts">
+        <a href="#plans" class="btn btn-pill btn-lg"><span data-i="footer.ctaPrimary"></span></a>
+        <a class="btn btn-line on-dark btn-lg" id="footWa" target="_blank" rel="noopener"><span data-i="footer.ctaWhatsApp"></span></a>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div>
+        <div class="brand" style="gap:11px">
+          <img src="__LOGO_URI__" alt="" width="38" height="38">
+          <b class="keep" style="font-size:22px">MOOR<i>TV</i></b>
+        </div>
+        <p style="margin-top:18px;max-width:36ch;font-size:13.5px;color:rgba(255,255,255,.55)" data-i="footer.about"></p>
+        <div class="soc">
+          <a id="socWa" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden><path d="M12.04 2C6.6 2 2.17 6.43 2.16 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.32-1.39a9.86 9.86 0 0 0 4.71 1.2h.01c5.44 0 9.87-4.43 9.88-9.88a9.8 9.8 0 0 0-2.89-6.99A9.8 9.8 0 0 0 12.04 2Zm5.8 15.68a8.2 8.2 0 0 1-5.8 2.4h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.25-4.35c0-4.53 3.69-8.21 8.22-8.21a8.16 8.16 0 0 1 5.8 2.41 8.15 8.15 0 0 1 2.4 5.81c0 4.53-3.69 8.21-8.22 8.21Z"/></svg></a>
+          <a href="https://www.snapchat.com/add/moor.view" target="_blank" rel="noopener" aria-label="Snapchat"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden><path d="M12.02 2c2.7 0 4.42 1.9 4.55 4.6.04.83-.02 1.63-.06 2.28.24.1.55.13.85.02.24-.09.5-.13.7-.13.5 0 .95.31.95.79 0 .45-.35.73-.9.95-.13.05-.31.1-.5.17-.5.16-1.05.35-1.2.7-.09.2-.05.46.12.78.05.1 1.24 2.4 3.48 2.77.28.05.48.3.46.58-.05.7-1.44 1.13-2.5 1.3-.11.02-.2.15-.26.44-.03.12-.06.27-.1.43-.06.24-.24.4-.5.4h-.03c-.16 0-.38-.03-.67-.09a5.4 5.4 0 0 0-1.1-.12c-.27 0-.54.02-.82.07-.54.09-1 .43-1.53.82-.76.56-1.62 1.2-2.93 1.2h-.12c-1.3 0-2.15-.64-2.9-1.2-.53-.4-1-.73-1.54-.82a5.1 5.1 0 0 0-.82-.07c-.47 0-.85.07-1.13.13-.26.05-.47.09-.63.09-.34 0-.5-.2-.56-.42-.04-.16-.07-.3-.1-.43-.06-.28-.15-.42-.26-.44-1.06-.16-2.45-.6-2.5-1.3a.55.55 0 0 1 .46-.58c2.24-.37 3.43-2.67 3.48-2.77.17-.32.21-.58.12-.78-.15-.35-.7-.54-1.2-.7-.19-.06-.37-.12-.5-.17-.7-.28-.94-.6-.9-.99.04-.42.5-.71.94-.71.2 0 .43.04.66.13.32.12.6.15.85.06-.04-.65-.1-1.45-.06-2.28C7.6 3.9 9.32 2 12.02 2Z"/></svg></a>
+        </div>
+      </div>
+      <nav><h3 class="keep" data-i="footer.explore"></h3><ul id="fExplore"></ul></nav>
+      <nav><h3 class="keep" data-i="footer.support"></h3><ul id="fSupport"></ul></nav>
+      <div><h3 class="keep" data-i="footer.contact"></h3><ul id="fContact"></ul></div>
+    </div>
+    <div class="fbot">
+      <p>© 2026 MOOR TV. <span data-i="footer.rights"></span></p>
+      <p style="max-width:46ch" data-i="footer.trademarks"></p>
+    </div>
+  </div>
+</footer>
+
+<a id="fab" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" aria-hidden><path d="M12.04 2C6.6 2 2.17 6.43 2.16 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.32-1.39a9.86 9.86 0 0 0 4.71 1.2h.01c5.44 0 9.87-4.43 9.88-9.88a9.8 9.8 0 0 0-2.89-6.99A9.8 9.8 0 0 0 12.04 2Zm5.8 15.68a8.2 8.2 0 0 1-5.8 2.4h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.25-4.35c0-4.53 3.69-8.21 8.22-8.21a8.16 8.16 0 0 1 5.8 2.41 8.15 8.15 0 0 1 2.4 5.81c0 4.53-3.69 8.21-8.22 8.21Z"/><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
+  <span class="lbl" data-i="footer.orderNow"></span></a>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="moTitle">
+  <div class="scrim" data-close-modal></div>
+  <div class="sheet">
+    <button class="iconbtn" data-close-modal aria-label="Close" style="position:absolute;top:20px;inset-inline-end:20px">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden><path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="step" id="stepPick">
+      <span class="lbl keep" data-i="pick.eyebrow"></span>
+      <h2 id="moTitle" data-i="pick.title"></h2>
+      <p class="lede" data-i="pick.sub"></p>
+      <p class="forCat" id="forCat" style="display:none"></p>
+      <div class="pickList" id="pickList"></div>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted)" data-i="pick.note"></p>
+    </div>
+
+    <div class="step" id="stepForm">
+      <button type="button" class="backBtn" id="moBack"><i>←</i><span data-i="pick.back"></span></button>
+      <div class="chosen" id="chosenBox"></div>
+      <form id="coForm" novalidate style="margin-top:22px">
+        <div class="field" id="fName">
+          <div class="lb"><label for="cName"><span data-i="checkout.name"></span> <span style="color:var(--orange)">*</span></label></div>
+          <input id="cName" autocomplete="name"><p class="err" data-i="checkout.nameError"></p>
+        </div>
+        <div class="field" id="fPhone">
+          <div class="lb"><label for="cPhone"><span data-i="checkout.phone"></span> <span style="color:var(--orange)">*</span></label></div>
+          <input id="cPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel">
+          <p class="hint" data-i="checkout.phoneHint"></p><p class="err" data-i="checkout.phoneError"></p>
+        </div>
+        <div class="field" id="fDevice">
+          <div class="lb"><label><span data-i="checkout.device"></span> <span style="color:var(--orange)">*</span></label></div>
+          <div class="sel" id="deviceSel">
+            <button type="button" class="selBtn ph" id="deviceBtn"
+                    aria-haspopup="listbox" aria-expanded="false">
+              <span id="deviceLabel"></span>
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden>
+                <path d="M3.5 6 8 10.5 12.5 6" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="selList" id="deviceList" role="listbox" hidden></div>
+          </div>
+          <p class="err" data-i="checkout.deviceError"></p>
+        </div>
+        <div class="field" id="fPay">
+          <div class="lb"><label><span data-i="checkout.pay"></span> <span style="color:var(--orange)">*</span></label></div>
+          <div class="payGrid" id="payGrid" role="radiogroup"></div>
+          <p class="err" data-i="checkout.payError"></p>
+        </div>
+        <!-- Revealed only once a service is picked: before that there is
+             nothing to pay to, and a number on screen would just be noise. -->
+        <div class="payBox" id="payBox" hidden></div>
+        <div class="field" id="fProof">
+          <div class="lb"><label><span data-i="checkout.proof"></span> <span style="color:var(--orange)">*</span></label></div>
+          <label class="drop" id="proofDrop">
+            <input type="file" id="cProof" accept="image/*" hidden>
+            <span class="dropIn" id="proofFace"></span>
+          </label>
+          <p class="hint" data-i="checkout.proofHint"></p><p class="err" data-i="checkout.proofError"></p>
+        </div>
+        <div class="field">
+          <div class="lb"><label for="cNotes" data-i="checkout.notes"></label><span class="opt" data-i="checkout.optional"></span></div>
+          <textarea id="cNotes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-wa btn-lg btn-full"><span data-i="checkout.submit"></span></button>
+        <p style="margin-top:12px;font-size:12px;color:var(--muted)" id="coNote"></p>
+      </form>
+    </div>
+
+    <!-- Step three. A wa.me link carries text but never a file, so the order
+         details go first and the screenshot follows from the share sheet. -->
+    <div class="step" id="stepSent">
+      <span class="lbl keep" data-i="checkout.done"></span>
+      <h2 data-i="checkout.sentTitle"></h2>
+      <p class="lede" id="sentBody" data-i="checkout.sentBody"></p>
+      <p class="sentRef" id="sentRef" hidden></p>
+      <div class="sentArt" id="sentArt"></div>
+      <button type="button" class="btn btn-wa btn-lg btn-full" id="sendProof">
+        <span data-i="checkout.sendProof"></span></button>
+      <p class="hint" id="sendProofNote" style="margin-top:10px" hidden data-i="checkout.sendProofManual"></p>
+      <button type="button" class="btn btn-line btn-full" style="margin-top:10px" id="reopenWa">
+        <span data-i="checkout.reopen"></span></button>
+    </div>
+  </div>
+</div>
+__IMG_MAP__
+<script src="app.js"></script>
+</body>
+</html>

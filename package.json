@@ -1,0 +1,14 @@
+{
+  "name": "moortv",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs --out .vercel-static",
+    "dev": "node src/build.mjs --out dist && echo 'open dist/index.html'",
+    "single": "node src/build.mjs --single"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}
