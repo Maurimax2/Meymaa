@@ -13,8 +13,9 @@ defaults is the whole job. Nothing to configure, no branch to change.
    Leave every setting alone. `vercel.json` tells it what to run.
 2. **Storage → create a Blob store → connect it to the project.**
    That sets `BLOB_READ_WRITE_TOKEN` by itself.
-3. **Settings → Environment Variables → add `ADMIN_KEY`** — any long random
-   string. This is the password for `/admin`.
+3. **Settings → Environment Variables → add `ADMIN_KEY`** — this is the
+   password for `/admin`. The username is `MOORTV`; set `ADMIN_USER` too if
+   you want a different one.
 4. **Redeploy.** Environment variables only apply to deployments made after
    they are set, so the first deploy will not see them.
 
@@ -81,7 +82,7 @@ colours so it is recognisable without being read.
 | Route | What it does |
 | --- | --- |
 | `POST /api/order` | files one order; public, called by the checkout |
-| `POST /api/orders` | admin login — sets an HttpOnly cookie if the key matches |
+| `POST /api/orders` | admin login — sets an HttpOnly cookie if the pair matches |
 | `GET /api/orders` | the order list, newest first |
 | `DELETE /api/orders` | log out |
 | `GET /api/proof?p=` | streams one payment screenshot |
@@ -96,6 +97,12 @@ logs in once and the server sets an **HttpOnly** cookie; the images then load
 through `/api/proof` on the strength of it. Keeping the key in JavaScript and
 putting it in the image URLs would have leaked it into history and logs.
 
+The cookie holds a **signed token, not the password** — `expiry.HMAC(expiry)`
+under `ADMIN_KEY`, valid twelve hours. So the secret never sits in the browser's
+cookie jar, a stolen cookie stops working on its own, and changing `ADMIN_KEY`
+logs every open session out. A wrong username and a wrong password give the
+same error, and both are compared in constant time.
+
 The screenshot is downscaled to 1400px in the browser before upload: a phone
 screenshot is 2–5 MB, slow on mobile data and over the function body limit
 once base64'd, while 1400px of a bank receipt is still perfectly readable.
@@ -106,6 +113,12 @@ screenshot as a second share gesture. Nothing dead-ends.
 
 `ADMIN_KEY` is one shared password, not accounts: anyone who has it sees every
 order. Rotate it by changing the variable and redeploying.
+
+**Never commit the password.** This repository is public, and `/admin` shows
+customer names, phone numbers and photographs of their banking apps. The
+username lives in the code because it is not a secret; the password belongs in
+the Vercel environment variable and nowhere else. A password committed once
+stays in the git history and in every fork.
 
 ## Before going live
 

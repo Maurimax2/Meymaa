@@ -32,9 +32,9 @@ header .sp{margin-inline-start:auto;display:flex;gap:8px}
 .lock{max-width:400px;margin:12vh auto}
 .lock h1{font-size:20px;margin-bottom:6px}
 .lock p{font-size:13.5px;color:var(--muted);margin-bottom:18px}
-input[type=password]{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:3px;
-  background:var(--ink);margin-bottom:12px}
-input[type=password]:focus{outline:none;border-color:var(--blue)}
+input[type=password],input[type=text]{width:100%;padding:13px 14px;border:1px solid var(--line);
+  border-radius:3px;background:var(--ink);margin-bottom:12px}
+input[type=password]:focus,input[type=text]:focus{outline:none;border-color:var(--blue)}
 .err{color:#ff6b5e;font-size:13px;min-height:20px}
 .bar{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .bar h1{font-size:22px}
@@ -72,8 +72,10 @@ input[type=password]:focus{outline:none;border-color:var(--blue)}
 
   <div class="card lock" id="lock" hidden>
     <h1>الطلبات</h1>
-    <p>أدخل مفتاح الدخول للاطّلاع على الطلبات وصور التأكيد.</p>
-    <input type="password" id="key" autocomplete="current-password" placeholder="مفتاح الدخول">
+    <p>أدخل اسم المستخدم وكلمة المرور للاطّلاع على الطلبات وصور التأكيد.</p>
+    <input type="text" id="user" autocomplete="username" placeholder="اسم المستخدم"
+      dir="ltr" autocapitalize="none" autocorrect="off" spellcheck="false">
+    <input type="password" id="key" autocomplete="current-password" placeholder="كلمة المرور" dir="ltr">
     <button class="btn btn-p" style="width:100%" id="go">دخول</button>
     <p class="err" id="lockErr"></p>
   </div>
@@ -152,18 +154,22 @@ function load(){
 }
 
 $('#go').addEventListener('click', function (){
-  var key = $('#key').value;
+  var user = $('#user').value, key = $('#key').value;
   $('#lockErr').textContent = '';
   fetch('/api/orders', { method:'POST', credentials:'same-origin',
-    headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key: key })
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ user: user, key: key })
   }).then(function (r){
-    if (r.ok) { $('#key').value=''; return load(); }
+    if (r.ok) { $('#user').value=''; $('#key').value=''; return load(); }
     return r.json().catch(function(){ return {}; }).then(function (j){
+      // Deliberately one message for both halves — see api/orders.mjs.
       $('#lockErr').textContent = j.error === 'admin-key-not-set'
-        ? 'لم يُضبط ADMIN_KEY على Vercel بعد.' : 'مفتاح غير صحيح.';
+        ? 'لم يُضبط ADMIN_KEY على Vercel بعد.'
+        : 'اسم المستخدم أو كلمة المرور غير صحيحة.';
     });
   }).catch(function (){ $('#lockErr').textContent = 'تعذّر الاتصال بالخادم.'; });
 });
+$('#user').addEventListener('keydown', function (e){ if (e.key === 'Enter') $('#key').focus(); });
 $('#key').addEventListener('keydown', function (e){ if (e.key === 'Enter') $('#go').click(); });
 $('#reload').addEventListener('click', load);
 $('#out').addEventListener('click', function (){

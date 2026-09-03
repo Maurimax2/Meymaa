@@ -1,9 +1,10 @@
 /* Admin: log in, and read the order log.
-   POST { key }  → sets an HttpOnly cookie when the key matches ADMIN_KEY
-   DELETE        → clears it
-   GET           → the most recent orders, newest first */
+   POST { user, key } → sets an HttpOnly session cookie when both match
+   DELETE             → clears it
+   GET                → the most recent orders, newest first */
 import { list, get } from '@vercel/blob';
-import { COOKIE, keyMatches, authed, blobToken } from './_lib.mjs';
+import { COOKIE, SESSION_TTL, userMatches, keyMatches, authed,
+         makeSession, blobToken } from './_lib.mjs';
 
 export const config = { maxDuration: 30 };
 
@@ -13,13 +14,17 @@ export default async function handler(req, res) {
   const token = blobToken();
 
   if (req.method === 'POST') {
-    const key = req.body && req.body.key;
+    const b = req.body && typeof req.body === 'object' ? req.body : {};
     if (!process.env.ADMIN_KEY) return res.status(503).json({ error:'admin-key-not-set' });
-    if (!keyMatches(key)) return res.status(401).json({ error:'bad-key' });
-    // HttpOnly so page scripts cannot read it back out; Strict so it is not
-    // sent from anywhere but the admin page itself.
-    res.setHeader('Set-Cookie', COOKIE + '=' + encodeURIComponent(String(key)) +
-      '; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=' + (60 * 60 * 12));
+    // Both halves are compared before the verdict, so a wrong name costs the
+    // same time as a wrong password, and the error does not say which failed.
+    const okUser = userMatches(b.user);
+    const okKey = keyMatches(b.key);
+    if (!okUser || !okKey) return res.status(401).json({ error:'bad-credentials' });
+    // A signed token, not the password. HttpOnly so page scripts cannot read
+    // it back out; Strict so it is not sent from anywhere but the admin page.
+    res.setHeader('Set-Cookie', COOKIE + '=' + encodeURIComponent(makeSession()) +
+      '; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=' + SESSION_TTL);
     return res.status(200).json({ ok:true });
   }
 
