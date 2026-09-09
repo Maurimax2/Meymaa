@@ -52,12 +52,22 @@ question — a wrong tap would otherwise show the wrong currency forever.
 | | Mauritania (`mr`) | International (`intl`) |
 | --- | --- | --- |
 | Terms | 1 / 3 / 6 / 12 / 15 months, plus two-screen and the stick | 3 / 6 / 12 months |
-| Prices | 500 – 4,500 MRU | 30 / 50 / 80 USDT |
+| Prices | 500 – 4,500 MRU | $30 / $50 / $80 |
 | Paid with | Bankily, Masrvi, Sedad, Click | USDT on Tron, Ethereum or BNB |
 | Hardware | the TV stick | hidden — nothing is shipped abroad |
 
+Prices abroad are written in dollars, because that is the sum owed; USDT is
+only what settles it, so the token is named on the payment panel and in the
+warning rather than on every price tag. `curCode()` is the one place that
+decides.
+
 `PLANS_INTL` in `app.js` is the international table and `PAY_USDT` holds the
-three chains. Everything that prices or lists an offer goes through
+three chains. Their marks are supplied artwork like the bank logos
+(`pay-trx`, `pay-eth`, `pay-bnb`), and they sit on the same white plate: two of
+the three arrived on a white ground rather than a transparent one, so any other
+backing would frame them in a visible square. The Tether mark beside the amount
+is the one still drawn as vector in `MARK`, no artwork having been supplied for
+it. Everything that prices or lists an offer goes through
 `planList()` and `extraList()` rather than touching `PLANS` directly, so a
 third region would be one more table and one more branch.
 
@@ -119,7 +129,7 @@ colours so it is recognisable without being read.
 | `DELETE /api/orders` | log out |
 | `GET /api/proof?p=` | streams one payment screenshot |
 
-Every order records its own `region` and `currency`, because 30 USDT and 30 MRU
+Every order records its own `region` and `currency`, because 30 dollars and 30 MRU
 are the same number and very different money — the admin page never assumes.
 International orders also record the `network` and `address` the customer says
 they paid to, which are the two things to check a screenshot against. Orders
@@ -168,9 +178,10 @@ stays in the git history and in every fork.
   titles are trademarks. Removing a background changes none of that. Replace
   them with images you own or licensed, or delete the files — every slot falls
   back to type rather than breaking.
-- **The four payment logos are bank trademarks.** Shown to say which services
-  are accepted, unmodified, on white plates. Confirm that is acceptable to
-  each bank.
+- **The payment marks are trademarks** — the four banks, and Tron, Ethereum,
+  BNB Chain and Tether alongside them. All are shown unmodified on white
+  plates, to say which services are accepted. Confirm that is acceptable to
+  each.
 - **The hardware is a Xiaomi TV stick sold under the MOOR TV name.** Confirm
   the model, its real specification (the 4K claim in `device.specs`
   particularly) and whether it may be resold rebranded.

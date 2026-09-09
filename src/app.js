@@ -23,7 +23,10 @@ function wa(m){ return 'https://wa.me/' + WA_E164 + '?text=' + encodeURIComponen
 // French groups thousands with a space, Arabic Mauritania uses the comma.
 // Every figure on the page runs through this, including the WhatsApp order.
 function num(n){ return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-US').format(n); }
-function curCode(){ return region === 'intl' ? 'USDT' : 'MRU'; }
+/* What the price is written in. Abroad that is dollars — the sum owed — while
+   USDT is merely the thing it is settled in, named on the payment panel and in
+   the warning rather than on every price tag. */
+function curCode(){ return region === 'intl' ? '$' : 'MRU'; }
 function money(n){ return num(n) + ' ' + curCode(); }
 
 /* Brand */
@@ -50,7 +53,7 @@ ar: {
     subtitle:'كل الاشتراكات تفتح المكتبة كاملة — الفرق في المدة، وفي عدد الأجهزة إن أردت جهازين. كلما طالت المدة قلّت التكلفة الشهرية.',
     footnote:'الأسعار بالأوقية الموريتانية. التفعيل والدعم عبر واتساب، ولا يُخصم أي مبلغ عبر الموقع.',
     footnoteIntl:'الأسعار بالدولار وتُدفع بعملة USDT. التفعيل والدعم عبر واتساب، ولا يُخصم أي مبلغ عبر الموقع.',
-    perMonth:function(n){ return region === 'intl' ? num(n) + ' USDT شهرياً' : num(n) + ' أوقية شهرياً'; },
+    perMonth:function(n){ return region === 'intl' ? num(n) + ' $ شهرياً' : num(n) + ' أوقية شهرياً'; },
     save:function(p){ return 'وفّر ' + p + '%'; },
     popular:'الأكثر طلباً', best:'أفضل قيمة', add:'اشترك الآن',
     months:function(n){ return n===1?'شهر واحد':n===12?'سنة كاملة':n+' شهراً'; },
@@ -191,7 +194,7 @@ fr: {
     subtitle:'Tous les abonnements ouvrent la bibliothèque complète — ce qui change, c’est la durée, et le nombre d’appareils si vous en voulez deux. Plus la durée est longue, moins le mois revient cher.',
     footnote:'Prix en ouguiya mauritanienne. Activation et assistance sur WhatsApp ; aucun montant n’est prélevé sur ce site.',
     footnoteIntl:'Prix en dollars, réglés en USDT. Activation et assistance sur WhatsApp ; aucun montant n’est prélevé sur ce site.',
-    perMonth:function(n){ return region === 'intl' ? num(n) + ' USDT / mois' : num(n) + ' MRU / mois'; },
+    perMonth:function(n){ return region === 'intl' ? num(n) + ' $ / mois' : num(n) + ' MRU / mois'; },
     save:function(p){ return 'Économisez ' + p + ' %'; },
     popular:'Le plus choisi', best:'Meilleure offre', add:'S’abonner',
     months:function(n){ return n===1?'1 mois':n===12?'1 an':n+' mois'; },
@@ -525,11 +528,11 @@ var PAY = [
    name for screen readers. Colours are each chain's own. */
 var USDT_EVM = '0x9fa2f4206f143a209551aefe83027deac048d9c3';
 var PAY_USDT = [
-  { id:'trc20', label:'TRC20', net:'Tron (TRC20)',
+  { id:'trc20', label:'TRC20', net:'Tron (TRC20)', logo:'pay-trx',
     addr:'THzakNPrnqjo3syUrHj1xbRdRezRwVezEv', bg:'#e8352b', fg:'#ffffff' },
-  { id:'erc20', label:'ERC20', net:'Ethereum (ERC20)',
+  { id:'erc20', label:'ERC20', net:'Ethereum (ERC20)', logo:'pay-eth',
     addr:USDT_EVM, bg:'#627eea', fg:'#ffffff' },
-  { id:'bep20', label:'BEP20', net:'BNB Smart Chain (BEP20)',
+  { id:'bep20', label:'BEP20', net:'BNB Smart Chain (BEP20)', logo:'pay-bnb',
     addr:USDT_EVM, bg:'#f0b90b', fg:'#0a1020' }
 ];
 function payList(){ return region === 'intl' ? PAY_USDT : PAY; }
@@ -550,6 +553,18 @@ var POSTERS = [
   { i:2, shot:'po-laliga',     crest:'l-laliga' },
   { i:3, shot:'po-seriea',     crest:'l-seriea' }
 ];
+
+/* ---------------- The Tether mark ----------------
+   Drawn as vector because no artwork was supplied for it, unlike the three
+   chains. It is Tether's trademark, reproduced unaltered to say which token is
+   accepted — the same footing as the bank logos, and the same README caveat. */
+var MARK = {
+  // The only mark still drawn rather than supplied. It labels the amount with
+  // the token being sent; swap it for real artwork the day there is some.
+  usdt:'<svg class="mk" viewBox="0 0 32 32" width="20" height="20" aria-hidden>'+
+    '<circle cx="16" cy="16" r="15" fill="#26a17b"/>'+
+    '<path fill="#fff" d="M8 8.3h16v3.9h-6.1v2.2c4.4.2 7.7 1.1 7.7 2.2 0 1.1-3.3 2-7.7 2.2v6.9h-3.8v-6.9c-4.4-.2-7.7-1.1-7.7-2.2 0-1.1 3.3-2 7.7-2.2v-2.2H8V8.3Zm8 8.9c3.9 0 7.1-.6 7.1-1.3 0-.6-2.6-1.1-6-1.2v2c-.4 0-.7.1-1.1.1s-.7 0-1.1-.1v-2c-3.4.1-6 .6-6 1.2 0 .7 3.2 1.3 7.1 1.3Z"/></svg>'
+};
 
 var TICK = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden><path d="m3 8.5 3.2 3.2L13 4.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var STAR = '<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden><path d="M10 1.6l2.5 5.1 5.6.8-4 3.9 1 5.6L10 14.3l-5 2.7 1-5.6-4.1-3.9 5.6-.8Z" fill="'+O+'"/></svg>';
@@ -993,13 +1008,19 @@ function renderCheckout(d){
   // they wear their own colour with the network's short name set on it.
   $('#payGrid').innerHTML = payList().map(function(m){
     var logo = photo(m.logo);
-    return '<button type="button" class="payBtn'+(logo?'':' chain')+(chosenPay===m.id?' on':'')+
+    var art = logo
+      ? '<img src="'+logo+'" alt="'+esc(d.payNames[m.id])+'" loading="lazy" decoding="async">'
+      : '';
+    // A bank logo says the whole thing on its own. A chain mark does not: the
+    // same Ethereum diamond is ERC20 here and something else elsewhere, so the
+    // network's name sits beside it.
+    var face = m.label ? '<span class="chainIn">'+art+
+                 '<span class="payTxt">'+esc(m.label)+'</span></span>'
+             : art || '<span class="payTxt">'+esc(d.payNames[m.id])+'</span>';
+    return '<button type="button" class="payBtn'+(m.label?' chain':'')+(chosenPay===m.id?' on':'')+
       '" role="radio" aria-checked="'+(chosenPay===m.id)+'" data-pay="'+m.id+'"'+
-      ' aria-label="'+esc(d.payNames[m.id])+'" style="--pc:'+m.bg+';--pf:'+m.fg+
-      ';color:'+m.fg+'">'+
-      (logo ? '<img src="'+logo+'" alt="'+esc(d.payNames[m.id])+'" loading="lazy" decoding="async">'
-            : '<span class="payTxt">'+esc(m.label || d.payNames[m.id])+'</span>')+
-      '</button>'; }).join('');
+      ' aria-label="'+esc(d.payNames[m.id])+'" style="--pc:'+m.bg+';--pf:'+m.fg+'">'+
+      face+'</button>'; }).join('');
   renderPayBox(d);
   renderProof(d);
 }
@@ -1022,7 +1043,7 @@ function renderPayBox(d){
       esc(intl ? m.addr : WA_DISPLAY)+'</span>'+
       '<button type="button" class="copy" id="payCopy">'+esc(d.checkout.copy)+'</button></div>'+
     (p ? '<div class="amt"><span>'+esc(d.checkout.payAmount)+'</span>'+
-         '<b dir="ltr">'+money(p.price)+'</b></div>' : '')+
+         '<b dir="ltr">'+(intl ? MARK.usdt : '')+money(p.price)+'</b></div>' : '')+
     (intl ? '<div class="warn">'+esc(d.checkout.walletWarn)+'</div>' : '')+
     '<div class="note">'+esc(intl ? d.checkout.payNoteIntl : d.checkout.payNote)+'</div>';
 }
@@ -1222,7 +1243,6 @@ function preloader(){
 function renderGate(d){
   var r = d.region;
   $('#rgTitle').textContent = r.title;
-  $('#rgSub').textContent = r.sub;
   $('#rgMr').textContent = r.mr;
   $('#rgIntl').textContent = r.intl;
   $('#regionTxt').textContent = region === 'intl' ? 'INT' : 'MR';
@@ -1439,7 +1459,7 @@ function sendOrder(){
       // The admin page cannot tell 30 USDT from 30 MRU without these, and
       // "which chain, which address" is the first thing to check against the
       // screenshot when confirming an international payment.
-      region: region || 'mr', currency: curCode(),
+      region: region || 'mr', currency: region === 'intl' ? 'USD' : 'MRU',
       network: pm ? (pm.net || '') : '', address: pm ? (pm.addr || '') : ''
     };
     var done = function(ref){

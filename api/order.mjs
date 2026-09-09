@@ -46,7 +46,7 @@ export default async function handler(req, res) {
        as 'mr', which is the flow that existed before international orders and
        so the safe reading of an old or malformed client. */
     const region = str(b.region, 4) === 'intl' ? 'intl' : 'mr';
-    const currency = region === 'intl' ? 'USDT' : 'MRU';
+    const currency = region === 'intl' ? 'USD' : 'MRU';
 
     const order = { ref, at, name, phone,
       device: str(b.device, 40), plan: str(b.plan, 60), months: num(b.months),

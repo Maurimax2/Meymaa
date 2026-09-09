@@ -100,10 +100,14 @@ var PAY = { bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', c
 var $ = function (s) { return document.querySelector(s); };
 function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;')
   .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-/* An order carries its own currency: 30 USDT and 30 MRU are the same number
-   and wildly different money, so the code is never assumed. Orders filed
-   before international sales existed have no field and are ouguiya. */
-function money(n, cur){ return new Intl.NumberFormat('en-US').format(n||0) + ' ' + (cur || 'MRU'); }
+/* An order carries its own currency: 30 dollars and 30 ouguiya are the same
+   number and wildly different money, so the code is never assumed. Orders
+   filed before international sales existed have no field and are ouguiya;
+   'USDT' is read too, being what the earliest international orders stored. */
+var SYM = { USD:'$', USDT:'$', MRU:'MRU' };
+function money(n, cur){
+  return new Intl.NumberFormat('en-US').format(n||0) + ' ' + (SYM[cur] || cur || 'MRU');
+}
 function when(iso){
   var d = new Date(iso); if (isNaN(d)) return '';
   return d.toLocaleString('fr-FR', { dateStyle:'medium', timeStyle:'short' });
