@@ -155,8 +155,7 @@ ar: {
   payNames:{ bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', click:'كليك',
     trc20:'USDT عبر شبكة ترون', erc20:'USDT عبر شبكة إيثيريوم', bep20:'USDT عبر شبكة بينانس' },
   region:{ title:'من أين تشترك؟', sub:'تختلف الأسعار وطرق الدفع حسب المنطقة.',
-    mr:'من داخل موريتانيا', mrSub:'بنكيلي، مصرفي، السداد أو كليك — بالأوقية',
-    intl:'من خارج موريتانيا', intlSub:'الدفع بعملة USDT — بالدولار',
+    mr:'من داخل موريتانيا', intl:'من خارج موريتانيا',
     change:'تغيير المنطقة' },
   footer:{ ctaEyebrow:'ابدأ الآن', ctaA:'جاهز للمشاهدة؟', ctaB:'ابدأ اليوم.',
     ctaSub:'اشتراك واحد يفتح لك كل المحتوى — من 500 أوقية.',
@@ -290,8 +289,7 @@ fr: {
   payNames:{ bankily:'Bankily', masrvi:'Masrvi', sedad:'Sedad', click:'Click',
     trc20:'USDT via le réseau Tron', erc20:'USDT via le réseau Ethereum', bep20:'USDT via le réseau BNB' },
   region:{ title:'D’où commandez-vous ?', sub:'Les prix et les moyens de paiement changent selon la région.',
-    mr:'Depuis la Mauritanie', mrSub:'Bankily, Masrvi, Sedad ou Click — en ouguiya',
-    intl:'Depuis l’étranger', intlSub:'Paiement en USDT — en dollars',
+    mr:'Depuis la Mauritanie', intl:'Depuis l’étranger',
     change:'Changer de région' },
   footer:{ ctaEyebrow:'Commencer', ctaA:'Prêt à regarder ?', ctaB:'Commencez aujourd’hui.',
     ctaSub:'Un seul abonnement débloque tout — à partir de 500 MRU.',
@@ -1225,8 +1223,8 @@ function renderGate(d){
   var r = d.region;
   $('#rgTitle').textContent = r.title;
   $('#rgSub').textContent = r.sub;
-  $('#rgMr').textContent = r.mr;       $('#rgMrSub').textContent = r.mrSub;
-  $('#rgIntl').textContent = r.intl;   $('#rgIntlSub').textContent = r.intlSub;
+  $('#rgMr').textContent = r.mr;
+  $('#rgIntl').textContent = r.intl;
   $('#regionTxt').textContent = region === 'intl' ? 'INT' : 'MR';
   $('#regionBtn').setAttribute('aria-label', r.change);
   $('#regionBtn').hidden = !region;
