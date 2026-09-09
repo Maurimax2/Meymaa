@@ -31,17 +31,30 @@ function sameString(given, want) {
   if (a.length !== b.length) return false;
   try { return timingSafeEqual(a, b); } catch (e) { return false; }
 }
+/* Environment values are trimmed. Pasting a secret into a dashboard field
+   very easily carries a trailing space or newline, and an untrimmed compare
+   then rejects the right password with no way to see why. What the visitor
+   types is trimmed for the same reason — a phone keyboard likes to append a
+   space. Whitespace inside a password is still honoured; only the ends go. */
+function envStr(name) {
+  return String(process.env[name] == null ? '' : process.env[name]).trim();
+}
+export function adminKeySet() { return envStr('ADMIN_KEY') !== ''; }
+
 /* The account name is not a secret — it ships in the page and only exists so
    the login looks like a login. ADMIN_USER can override it; the password is
    ADMIN_KEY and is never written down in this repo. */
 export function adminUser() {
-  return process.env.ADMIN_USER || 'MOORTV';
+  return envStr('ADMIN_USER') || 'MOORTV';
 }
 export function userMatches(given) {
-  return sameString(given, adminUser());
+  // Compared case-insensitively. It is a name rather than a secret, and a
+  // phone keyboard that quietly lowercases it should not read as a bad login.
+  return String(given == null ? '' : given).trim().toLowerCase()
+       === adminUser().toLowerCase();
 }
 export function keyMatches(given) {
-  return sameString(given, process.env.ADMIN_KEY || '');
+  return sameString(String(given == null ? '' : given).trim(), envStr('ADMIN_KEY'));
 }
 
 /* The cookie carries a signed token rather than the password itself, so the
@@ -49,7 +62,9 @@ export function keyMatches(given) {
    Signed with ADMIN_KEY, which means rotating the password also invalidates
    every session that was open under the old one. */
 function sign(msg) {
-  return createHmac('sha256', process.env.ADMIN_KEY || '').update(String(msg)).digest('hex');
+  // The same trimmed value the password is compared against, or a stray
+  // newline in the dashboard would invalidate every session it signed.
+  return createHmac('sha256', envStr('ADMIN_KEY')).update(String(msg)).digest('hex');
 }
 export function makeSession() {
   var exp = Date.now() + SESSION_TTL * 1000;
@@ -57,7 +72,7 @@ export function makeSession() {
 }
 export function sessionValid(tok) {
   var m = /^(\d{10,16})\.([a-f0-9]{64})$/.exec(String(tok || ''));
-  if (!m || !process.env.ADMIN_KEY) return false;
+  if (!m || !adminKeySet()) return false;
   if (Number(m[1]) < Date.now()) return false;          // expired
   return sameString(m[2], sign(m[1]));
 }

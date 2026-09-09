@@ -163,6 +163,25 @@ screenshot as a second share gesture. Nothing dead-ends.
 `ADMIN_KEY` is one shared password, not accounts: anyone who has it sees every
 order. Rotate it by changing the variable and redeploying.
 
+Both values are trimmed at both ends, because pasting a secret into a dashboard
+field very easily carries a trailing newline and an untrimmed compare then
+rejects the right password with nothing on screen to explain why. Whitespace
+*inside* a password still counts. The username is compared case-insensitively —
+it is a name, not a secret — while the password is exact.
+
+**If the login is refused, find out which half is wrong from the command line.**
+The header path skips the username entirely, so it isolates the password:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' \
+  -H 'x-admin-key: YOUR_PASSWORD' https://your-site/api/orders
+```
+
+`200` means the password is right and the username is what to look at. `401`
+means the value in Vercel is not what you are typing. `503` means `ADMIN_KEY`
+is not reaching the deployment at all — it was set after the last build, or
+set for the wrong environment.
+
 **Never commit the password.** This repository is public, and `/admin` shows
 customer names, phone numbers and photographs of their banking apps. The
 username lives in the code because it is not a secret; the password belongs in

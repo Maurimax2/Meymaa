@@ -4,7 +4,7 @@
    GET                → the most recent orders, newest first */
 import { list, get } from '@vercel/blob';
 import { COOKIE, SESSION_TTL, userMatches, keyMatches, authed,
-         makeSession, blobToken } from './_lib.mjs';
+         makeSession, adminKeySet, blobToken } from './_lib.mjs';
 
 export const config = { maxDuration: 30 };
 
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     const b = req.body && typeof req.body === 'object' ? req.body : {};
-    if (!process.env.ADMIN_KEY) return res.status(503).json({ error:'admin-key-not-set' });
+    if (!adminKeySet()) return res.status(503).json({ error:'admin-key-not-set' });
     // Both halves are compared before the verdict, so a wrong name costs the
     // same time as a wrong password, and the error does not say which failed.
     const okUser = userMatches(b.user);
