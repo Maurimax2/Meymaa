@@ -931,6 +931,10 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
   padding:9px 12px;background:#fff;border:2px solid transparent;border-radius:9px;
   box-shadow:0 0 0 1px var(--line);transition:box-shadow .2s,transform .15s}
 .payBtn:hover{transform:translateY(-2px)}
+/* The white plate exists for the supplied bank logos, which are drawn for
+   light backgrounds. The chains have no artwork, so their button wears the
+   network's own colour and carries its name as type. */
+.payBtn.chain{background:var(--pc)}
 .payBtn img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
 .payBtn.on{border-color:var(--pc);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 45%,transparent)}
 @supports not (color: color-mix(in srgb,red 50%,blue)){.payBtn.on{box-shadow:0 0 0 3px var(--pc)}}
@@ -951,6 +955,41 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
   display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px}
 .payBox .amt b{font-family:var(--disp);font-weight:800;font-size:22px}
 .payBox .note{margin-top:10px;font-size:11.5px;line-height:1.5;opacity:.82}
+/* A wallet address is 34–42 characters and must be readable character by
+   character, so it drops to a monospace face at a size that still wraps
+   inside the panel rather than the 32px display face a phone number wears.
+   `break-all` is deliberate: a broken address is useless, so it may wrap
+   anywhere, and the copy button is the path we actually want people to take. */
+.payBox.wallet .no{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14.5px;font-weight:700;letter-spacing:.01em;line-height:1.55;
+  overflow-wrap:anywhere;word-break:break-all;flex:1 1 100%}
+.payBox.wallet .copy{margin-inline-start:0}
+.payBox .warn{margin-top:12px;padding:10px 12px;border-radius:8px;
+  background:rgba(0,0,0,.2);font-size:12px;font-weight:700;line-height:1.5}
+/* The chains have no supplied artwork, so the plate carries the network's
+   short name instead of a logo. */
+.payTxt{font-size:13px;font-weight:800;letter-spacing:.04em}
+
+/* ——— The opening question: which country are we pricing for ——— */
+#regionGate{position:fixed;inset:0;z-index:120;display:flex;align-items:center;
+  justify-content:center;padding:22px;background:rgba(4,5,12,.92);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+#regionGate[hidden]{display:none}
+.rgCard{width:100%;max-width:420px;padding:30px 26px;border-radius:16px;
+  background:var(--panel,#0d1129);border:1px solid rgba(255,255,255,.12);
+  text-align:center;animation:rgIn .32s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rgIn{from{opacity:0;transform:translateY(14px) scale(.98)}}
+@media(prefers-reduced-motion:reduce){.rgCard{animation:none}}
+.rgCard img{margin:0 auto 14px}
+.rgCard h2{font-size:21px;line-height:1.3}
+.rgCard>p{margin-top:7px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.rgBtn{display:block;width:100%;margin-top:12px;padding:15px 18px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);
+  text-align:start;transition:border-color .2s,background .2s,transform .12s}
+.rgBtn:hover{border-color:var(--blue,#2f6bff);background:rgba(47,107,255,.1)}
+.rgBtn:active{transform:scale(.99)}
+.rgBtn b{display:block;font-size:15px;font-weight:700}
+.rgBtn span{display:block;margin-top:3px;font-size:12.5px;color:var(--muted);line-height:1.5}
 
 /* ——— Payment proof ——— */
 .drop{display:block;cursor:pointer}
@@ -992,6 +1031,7 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
     </a>
     <nav class="main" id="nav"></nav>
     <div class="tools">
+      <button class="tool keep" id="regionBtn"><span id="regionTxt">MR</span></button>
       <button class="tool keep" id="lang" aria-label="Language"><span id="langTxt">EN</span></button>
       <button class="tool" id="burger" aria-label="Menu" aria-expanded="false">
         <svg viewBox="0 0 16 16" width="17" height="17" fill="none" aria-hidden><path d="M2 4.5h12M2 11.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -1020,7 +1060,7 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
       <span class="heroPrice">
         <span class="l" data-i="hero.from"></span>
         <span class="n" id="fromPrice">500</span>
-        <span class="l">MRU</span>
+        <span class="l" id="fromCur">MRU</span>
       </span>
     </div>
     <div class="heroPills rev" id="heroPills"></div>
@@ -1057,7 +1097,7 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
   <div class="wrap">
     <div class="railwrap rev"><div class="rail" id="planRail"></div></div>
     <ul class="plansFeat rev" id="planFeat"></ul>
-    <p class="priceNote rev" data-i="plans.footnote"></p>
+    <p class="priceNote rev" id="planFootnote" data-i="plans.footnote"></p>
   </div>
 </section>
 
@@ -1168,7 +1208,7 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
     <div class="rev">
       <span class="lbl keep" data-i="footer.ctaEyebrow"></span>
       <h2><span data-i="footer.ctaA"></span> <span style="color:var(--orange-2)" data-i="footer.ctaB"></span></h2>
-      <p style="margin-inline:auto" data-i="footer.ctaSub"></p>
+      <p style="margin-inline:auto" id="ctaSub" data-i="footer.ctaSub"></p>
       <div class="acts">
         <a href="#plans" class="btn btn-pill btn-lg"><span data-i="footer.ctaPrimary"></span></a>
         <a class="btn btn-line on-dark btn-lg" id="footWa" target="_blank" rel="noopener"><span data-i="footer.ctaWhatsApp"></span></a>
@@ -1206,6 +1246,21 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
   <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" aria-hidden><path d="M12.04 2C6.6 2 2.17 6.43 2.16 11.88c0 1.74.46 3.44 1.32 4.94L2 22l5.32-1.39a9.86 9.86 0 0 0 4.71 1.2h.01c5.44 0 9.87-4.43 9.88-9.88a9.8 9.8 0 0 0-2.89-6.99A9.8 9.8 0 0 0 12.04 2Zm5.8 15.68a8.2 8.2 0 0 1-5.8 2.4h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.25-4.35c0-4.53 3.69-8.21 8.22-8.21a8.16 8.16 0 0 1 5.8 2.41 8.15 8.15 0 0 1 2.4 5.81c0 4.53-3.69 8.21-8.22 8.21Z"/><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
   <span class="lbl" data-i="footer.orderNow"></span></a>
 
+<!-- Asked once, before anything else, because it decides both the prices on
+     the shelf and how the customer can pay. The answer is remembered; the
+     header chip reopens this to change it. -->
+<div id="regionGate" role="dialog" aria-modal="true" aria-labelledby="rgTitle" hidden>
+  <div class="rgCard">
+    <img src="__LOGO_URI__" alt="" width="46" height="46">
+    <h2 id="rgTitle"></h2>
+    <p id="rgSub"></p>
+    <button type="button" class="rgBtn" data-region="mr">
+      <b id="rgMr"></b><span id="rgMrSub"></span></button>
+    <button type="button" class="rgBtn" data-region="intl">
+      <b id="rgIntl"></b><span id="rgIntlSub"></span></button>
+  </div>
+</div>
+
 <div id="modal" role="dialog" aria-modal="true" aria-labelledby="moTitle">
   <div class="scrim" data-close-modal></div>
   <div class="sheet">
@@ -1233,7 +1288,7 @@ html[dir=rtl] .backBtn i{transform:scaleX(-1);display:inline-block}
         <div class="field" id="fPhone">
           <div class="lb"><label for="cPhone"><span data-i="checkout.phone"></span> <span style="color:var(--orange)">*</span></label></div>
           <input id="cPhone" type="tel" inputmode="tel" dir="ltr" autocomplete="tel">
-          <p class="hint" data-i="checkout.phoneHint"></p><p class="err" data-i="checkout.phoneError"></p>
+          <p class="hint" id="phoneHint" data-i="checkout.phoneHint"></p><p class="err" data-i="checkout.phoneError"></p>
         </div>
         <div class="field" id="fDevice">
           <div class="lb"><label><span data-i="checkout.device"></span> <span style="color:var(--orange)">*</span></label></div>

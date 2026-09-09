@@ -46,6 +46,13 @@ input[type=password]:focus,input[type=text]:focus{outline:none;border-color:var(
 .order .ref{display:inline-flex;align-items:center;gap:8px;font-family:'Big Shoulders Display',sans-serif;
   font-weight:800;font-size:17px;letter-spacing:.08em;color:var(--blue-2)}
 .order .when{font-size:12px;color:var(--muted)}
+.order .tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;
+  font-weight:700;vertical-align:1px}
+.order .tag.mr{background:rgba(47,107,255,.16);color:var(--blue-2)}
+.order .tag.intl{background:rgba(240,185,11,.16);color:#f0b90b}
+/* Wallet addresses are long and must stay readable character by character. */
+.order dd.addr{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11.5px;font-weight:600;letter-spacing:0}
 .order dl{margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:7px 16px;font-size:13.5px}
 .order dt{color:var(--muted)}
 .order dd{font-weight:600;overflow-wrap:anywhere}
@@ -88,11 +95,15 @@ input[type=password]:focus,input[type=text]:focus{outline:none;border-color:var(
 </div>
 
 <script>
-var PAY = { bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', click:'كليك' };
+var PAY = { bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', click:'كليك',
+  trc20:'USDT — ترون', erc20:'USDT — إيثيريوم', bep20:'USDT — بينانس' };
 var $ = function (s) { return document.querySelector(s); };
 function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;')
   .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function money(n){ return new Intl.NumberFormat('en-US').format(n||0) + ' MRU'; }
+/* An order carries its own currency: 30 USDT and 30 MRU are the same number
+   and wildly different money, so the code is never assumed. Orders filed
+   before international sales existed have no field and are ouguiya. */
+function money(n, cur){ return new Intl.NumberFormat('en-US').format(n||0) + ' ' + (cur || 'MRU'); }
 function when(iso){
   var d = new Date(iso); if (isNaN(d)) return '';
   return d.toLocaleString('fr-FR', { dateStyle:'medium', timeStyle:'short' });
@@ -115,6 +126,8 @@ function render(orders){
     return '<article class="order">'+
       '<div>'+
         '<span class="ref">'+esc(o.ref)+'</span> '+
+        '<span class="tag '+(o.region==='intl'?'intl':'mr')+'">'+
+          (o.region==='intl'?'دولي':'موريتانيا')+'</span> '+
         '<span class="when">'+esc(when(o.at))+'</span>'+
         '<dl>'+
           '<dt>الاسم</dt><dd>'+esc(o.name)+'</dd>'+
@@ -122,8 +135,12 @@ function render(orders){
             (tel.length===8 ? '222'+tel : tel.replace(/^\+/,''))+
             '" target="_blank" rel="noopener" dir="ltr">'+esc(o.phone)+'</a></dd>'+
           '<dt>الاشتراك</dt><dd>'+esc(o.plan)+'</dd>'+
-          '<dt>المبلغ</dt><dd class="amt" dir="ltr">'+esc(money(o.price))+'</dd>'+
+          '<dt>المبلغ</dt><dd class="amt" dir="ltr">'+esc(money(o.price, o.currency))+'</dd>'+
           '<dt>الدفع</dt><dd>'+esc(PAY[o.pay]||o.pay||'—')+'</dd>'+
+          // Only international orders have a chain and an address, and they
+          // are what the screenshot has to be checked against.
+          (o.network ? '<dt>الشبكة</dt><dd dir="ltr">'+esc(o.network)+'</dd>' : '')+
+          (o.address ? '<dt>العنوان</dt><dd class="addr" dir="ltr">'+esc(o.address)+'</dd>' : '')+
           '<dt>الجهاز</dt><dd>'+esc(o.device||'—')+'</dd>'+
           (o.notes ? '<dt>ملاحظات</dt><dd>'+esc(o.notes)+'</dd>' : '')+
         '</dl>'+

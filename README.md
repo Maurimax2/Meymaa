@@ -42,6 +42,38 @@ build itself has no dependencies.
 | `src/images/` | artwork, plus `prepare.mjs` to regenerate it from originals |
 | `api/*.mjs` | three serverless functions |
 
+## Two regions
+
+The first thing a visitor answers is where they are buying from, because it
+decides both the prices and how they can pay. The answer is kept in
+`localStorage` under `moortv.region` and the chip in the header reopens the
+question — a wrong tap would otherwise show the wrong currency forever.
+
+| | Mauritania (`mr`) | International (`intl`) |
+| --- | --- | --- |
+| Terms | 1 / 3 / 6 / 12 / 15 months, plus two-screen and the stick | 3 / 6 / 12 months |
+| Prices | 500 – 4,500 MRU | 30 / 50 / 80 USDT |
+| Paid with | Bankily, Masrvi, Sedad, Click | USDT on Tron, Ethereum or BNB |
+| Hardware | the TV stick | hidden — nothing is shipped abroad |
+
+`PLANS_INTL` in `app.js` is the international table and `PAY_USDT` holds the
+three chains. Everything that prices or lists an offer goes through
+`planList()` and `extraList()` rather than touching `PLANS` directly, so a
+third region would be one more table and one more branch.
+
+**The wallet addresses are the load-bearing part.** Ethereum and BNB Smart
+Chain are both EVM chains and share one address; that repetition in `PAY_USDT`
+is deliberate, not a copy-and-paste slip. A single wrong character sends a
+customer's money somewhere no one can recover it, so the addresses are written
+out whole rather than assembled from pieces, and the checkout carries a warning
+that USDT must be sent on the network shown — sending on another one does not
+bounce, it is simply gone. The TRC20 address carries a base58 checksum and it
+was verified; the EVM address is all-lowercase and therefore has no checksum to
+verify, so it can only be checked by eye against the wallet.
+
+Two answers in the FAQ quote ouguiya prices and mobile money outright. Those
+entries carry `arI` / `frI` variants that replace them abroad.
+
 ## The shop
 
 **Offers.** Seven subscriptions on a horizontal shelf that drifts on its own
@@ -86,6 +118,13 @@ colours so it is recognisable without being read.
 | `GET /api/orders` | the order list, newest first |
 | `DELETE /api/orders` | log out |
 | `GET /api/proof?p=` | streams one payment screenshot |
+
+Every order records its own `region` and `currency`, because 30 USDT and 30 MRU
+are the same number and very different money — the admin page never assumes.
+International orders also record the `network` and `address` the customer says
+they paid to, which are the two things to check a screenshot against. Orders
+filed before international sales existed have neither field and are read as
+Mauritanian ouguiya.
 
 **Both the record and the screenshot are written `access:'private'`.** They
 carry the customer's name, phone and a picture of their bank app, so a public
@@ -137,6 +176,14 @@ stays in the git history and in every fork.
   particularly) and whether it may be resold rebranded.
 - **The reviews and the subscriber figures are illustrative, not real.**
   Replace them. Publishing invented ones as if genuine would mislead customers.
+- **Confirm the wallet addresses against your own wallet before taking a
+  single order.** Read them from `PAY_USDT` in `src/app.js`, character by
+  character. A crypto payment sent to a wrong address cannot be reversed,
+  cancelled or refunded by anyone, and the customer will still expect their
+  subscription.
+- **Selling abroad widens the licensing exposure, it does not narrow it.**
+  The content and imagery warnings above apply in every country the site now
+  takes money from, under that country's law rather than Mauritania's.
 - **You will be holding customer data** — names, phone numbers, pictures of
   banking apps. Delete what you no longer need, and tell customers you keep it.
 

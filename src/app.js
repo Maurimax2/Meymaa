@@ -9,6 +9,12 @@
 /* Current language. Declared up here because num() below reads it. */
 var lang = 'ar';
 
+/* Where the visitor is buying from. 'mr' is Mauritania — mobile money, prices
+   in ouguiya, the TV stick on offer. 'intl' is everywhere else — USDT on
+   chain, prices in dollars, no hardware to ship. null until the opening gate
+   is answered; money() and the plan tables below both read it. */
+var region = null;
+
 /* ---------------- Contact ---------------- */
 var WA_DISPLAY = '43 04 24 04';
 var WA_E164 = '22243042404';          // Mauritania +222
@@ -17,7 +23,8 @@ function wa(m){ return 'https://wa.me/' + WA_E164 + '?text=' + encodeURIComponen
 // French groups thousands with a space, Arabic Mauritania uses the comma.
 // Every figure on the page runs through this, including the WhatsApp order.
 function num(n){ return new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-US').format(n); }
-function money(n){ return num(n) + ' MRU'; }
+function curCode(){ return region === 'intl' ? 'USDT' : 'MRU'; }
+function money(n){ return num(n) + ' ' + curCode(); }
 
 /* Brand */
 var V = '#5b21b6', V2 = '#8b5cf6', O = '#2f6bff', O2 = '#6ba2ff', INK = '#06070e';
@@ -42,7 +49,8 @@ ar: {
   plans:{ eyebrow:'الأسعار', titleA:'كل الخيارات،', titleB:'نفس المحتوى.',
     subtitle:'كل الاشتراكات تفتح المكتبة كاملة — الفرق في المدة، وفي عدد الأجهزة إن أردت جهازين. كلما طالت المدة قلّت التكلفة الشهرية.',
     footnote:'الأسعار بالأوقية الموريتانية. التفعيل والدعم عبر واتساب، ولا يُخصم أي مبلغ عبر الموقع.',
-    perMonth:function(n){ return num(n) + ' أوقية شهرياً'; },
+    footnoteIntl:'الأسعار بالدولار وتُدفع بعملة USDT. التفعيل والدعم عبر واتساب، ولا يُخصم أي مبلغ عبر الموقع.',
+    perMonth:function(n){ return region === 'intl' ? num(n) + ' USDT شهرياً' : num(n) + ' أوقية شهرياً'; },
     save:function(p){ return 'وفّر ' + p + '%'; },
     popular:'الأكثر طلباً', best:'أفضل قيمة', add:'اشترك الآن',
     months:function(n){ return n===1?'شهر واحد':n===12?'سنة كاملة':n+' شهراً'; },
@@ -118,6 +126,12 @@ ar: {
     pay:'طريقة الدفع', payError:'اختر طريقة الدفع.',
     payTo:'حوّل المبلغ إلى هذا الرقم', payAmount:'المبلغ', copy:'نسخ', copied:'تم النسخ',
     payNote:'نفس الرقم يعمل مع الأربعة. بعد التحويل أرفق صورة التأكيد بالأسفل.',
+    /* USDT side. The warning is not decoration: USDT sent on the wrong chain
+       does not bounce, it is simply gone. */
+    payToWallet:'أرسل المبلغ إلى هذا العنوان', network:'الشبكة',
+    walletWarn:'أرسل USDT على هذه الشبكة فقط. الإرسال على شبكة أخرى يعني ضياع المبلغ نهائياً.',
+    payNoteIntl:'بعد التحويل أرفق لقطة شاشة من محفظتك بالأسفل.',
+    phoneHintIntl:'رقم واتساب مع رمز الدولة',
     proof:'صورة تأكيد الدفع', proofHint:'لقطة شاشة من تطبيق الدفع بعد إتمام التحويل.',
     proofPick:'اختر صورة', proofChange:'تغيير الصورة', proofError:'أرفق صورة تأكيد الدفع.',
     /* Two steps on purpose: a WhatsApp link can carry text but never a file,
@@ -131,15 +145,22 @@ ar: {
     ref:'رقم الطلب', filedBody:'وصل طلبك إلى مور تيفي مع صورة التأكيد. فتحنا واتساب برسالة فيها رقم طلبك — أرسلها وسنؤكد التفعيل.',
     msg:{greeting:'مرحباً مور تيفي،',intro:'طلب اشتراك جديد.',name:'الاسم',phone:'الهاتف',
       device:'الجهاز',payMethod:'طريقة الدفع',payNum:'رقم التحويل',
+      network:'الشبكة',address:'العنوان',
       plan:'الاشتراك',total:'الإجمالي',notes:'ملاحظات',
       proof:'سأرفق صورة تأكيد الدفع في هذه المحادثة.',
       ref:'رقم الطلب', filed:'صورة التأكيد مرفوعة مع الطلب.',
       closing:'الرجاء تأكيد الطلب.'} },
   devices:{ iphone:'آيفون أو آيباد', androidphone:'هاتف أندرويد', androidtv:'جهاز أندرويد تي في',
     samsung:'تلفاز سامسونج', lg:'تلفاز إل جي', hisense:'تلفاز هايسنس', starsat:'ستارسات' },
-  payNames:{ bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', click:'كليك' },
+  payNames:{ bankily:'بنكيلي', masrvi:'مصرفي', sedad:'السداد', click:'كليك',
+    trc20:'USDT عبر شبكة ترون', erc20:'USDT عبر شبكة إيثيريوم', bep20:'USDT عبر شبكة بينانس' },
+  region:{ title:'من أين تشترك؟', sub:'تختلف الأسعار وطرق الدفع حسب المنطقة.',
+    mr:'من داخل موريتانيا', mrSub:'بنكيلي، مصرفي، السداد أو كليك — بالأوقية',
+    intl:'من خارج موريتانيا', intlSub:'الدفع بعملة USDT — بالدولار',
+    change:'تغيير المنطقة' },
   footer:{ ctaEyebrow:'ابدأ الآن', ctaA:'جاهز للمشاهدة؟', ctaB:'ابدأ اليوم.',
     ctaSub:'اشتراك واحد يفتح لك كل المحتوى — من 500 أوقية.',
+    ctaSubIntl:'اشتراك واحد يفتح لك كل المحتوى — من 30 دولاراً.',
     ctaPrimary:'اختر اشتراكك', ctaWhatsApp:'راسلنا على واتساب', orderNow:'اطلب الآن',
     about:'مور تيفي يجمع أكثر من 20 ألف قناة مباشرة والأفلام والمسلسلات وكل البطولات الكروية الكبرى في اشتراك واحد — مصمَّم لموريتانيا.',
     explore:'تصفّح', support:'الدعم', contact:'تواصل معنا',
@@ -170,7 +191,8 @@ fr: {
   plans:{ eyebrow:'Tarifs', titleA:'Toutes les formules,', titleB:'le même contenu.',
     subtitle:'Tous les abonnements ouvrent la bibliothèque complète — ce qui change, c’est la durée, et le nombre d’appareils si vous en voulez deux. Plus la durée est longue, moins le mois revient cher.',
     footnote:'Prix en ouguiya mauritanienne. Activation et assistance sur WhatsApp ; aucun montant n’est prélevé sur ce site.',
-    perMonth:function(n){ return num(n) + ' MRU / mois'; },
+    footnoteIntl:'Prix en dollars, réglés en USDT. Activation et assistance sur WhatsApp ; aucun montant n’est prélevé sur ce site.',
+    perMonth:function(n){ return region === 'intl' ? num(n) + ' USDT / mois' : num(n) + ' MRU / mois'; },
     save:function(p){ return 'Économisez ' + p + ' %'; },
     popular:'Le plus choisi', best:'Meilleure offre', add:'S’abonner',
     months:function(n){ return n===1?'1 mois':n===12?'1 an':n+' mois'; },
@@ -242,6 +264,12 @@ fr: {
     pay:'Moyen de paiement', payError:'Choisissez un moyen de paiement.',
     payTo:'Transférez le montant à ce numéro', payAmount:'Montant', copy:'Copier', copied:'Copié',
     payNote:'Le même numéro fonctionne pour les quatre. Après le transfert, joignez la preuve ci-dessous.',
+    /* Côté USDT. L’avertissement n’est pas décoratif : des USDT envoyés sur le
+       mauvais réseau ne reviennent pas, ils sont perdus. */
+    payToWallet:'Envoyez le montant à cette adresse', network:'Réseau',
+    walletWarn:'Envoyez uniquement des USDT sur ce réseau. Un envoi sur un autre réseau est définitivement perdu.',
+    payNoteIntl:'Après le transfert, joignez la capture d’écran de votre portefeuille ci-dessous.',
+    phoneHintIntl:'Numéro WhatsApp avec l’indicatif du pays',
     proof:'Preuve de paiement', proofHint:'Capture d’écran de l’application après le transfert.',
     proofPick:'Choisir une image', proofChange:'Changer l’image', proofError:'Joignez la preuve de paiement.',
     sentTitle:'Encore une étape',
@@ -252,15 +280,22 @@ fr: {
     ref:'N° de commande', filedBody:'Votre commande est arrivée chez MOOR TV avec la preuve de paiement. WhatsApp s’est ouvert avec votre numéro de commande — envoyez-le et nous confirmons l’activation.',
     msg:{greeting:'Bonjour MOOR TV,',intro:'Nouvelle commande d’abonnement.',name:'Nom',phone:'Téléphone',
       device:'Appareil',payMethod:'Moyen de paiement',payNum:'Numéro du transfert',
+      network:'Réseau',address:'Adresse',
       plan:'Abonnement',total:'Total',notes:'Remarques',
       proof:'Je joins la preuve de paiement dans cette conversation.',
       ref:'N° de commande', filed:'La preuve de paiement est déjà jointe à la commande.',
       closing:'Merci de confirmer la commande.'} },
   devices:{ iphone:'iPhone ou iPad', androidphone:'Téléphone Android', androidtv:'Boîtier Android TV',
     samsung:'TV Samsung', lg:'TV LG', hisense:'TV Hisense', starsat:'StarSat' },
-  payNames:{ bankily:'Bankily', masrvi:'Masrvi', sedad:'Sedad', click:'Click' },
+  payNames:{ bankily:'Bankily', masrvi:'Masrvi', sedad:'Sedad', click:'Click',
+    trc20:'USDT via le réseau Tron', erc20:'USDT via le réseau Ethereum', bep20:'USDT via le réseau BNB' },
+  region:{ title:'D’où commandez-vous ?', sub:'Les prix et les moyens de paiement changent selon la région.',
+    mr:'Depuis la Mauritanie', mrSub:'Bankily, Masrvi, Sedad ou Click — en ouguiya',
+    intl:'Depuis l’étranger', intlSub:'Paiement en USDT — en dollars',
+    change:'Changer de région' },
   footer:{ ctaEyebrow:'Commencer', ctaA:'Prêt à regarder ?', ctaB:'Commencez aujourd’hui.',
     ctaSub:'Un seul abonnement débloque tout — à partir de 500 MRU.',
+    ctaSubIntl:'Un seul abonnement débloque tout — à partir de 30 dollars.',
     ctaPrimary:'Choisir mon abonnement', ctaWhatsApp:'Nous écrire sur WhatsApp', orderNow:'Commander',
     about:'MOOR TV réunit plus de 20 000 chaînes en direct, les films, les séries et toutes les grandes compétitions de football dans un seul abonnement — pensé pour la Mauritanie.',
     explore:'Explorer', support:'Assistance', contact:'Contact',
@@ -302,6 +337,29 @@ var EXTRAS = [
   { id:'dev', months:15, price:4500, kind:'device', photo:'d-stick' }
 ];
 EXTRAS.forEach(function (e) { e.per = Math.round(e.price / e.months); });
+
+/* ---------------- International plans ----------------
+   30 / 50 / 80 USDT over three, six and twelve months. Ten dollars a month is
+   the reference the savings are measured against, the way 500 MRU is at home.
+   The monthly figure keeps one decimal here: 50 over six months is 8.3, and
+   rounding that to 8 would advertise a price nobody can actually pay.
+   There is no hardware term — the stick is not shipped abroad. */
+var BASE_INTL = 10;
+var PLANS_INTL = [
+  { id:'i3',  months:3,  price:30 },
+  { id:'i6',  months:6,  price:50, badge:'popular' },
+  { id:'i12', months:12, price:80, badge:'best', best:true }
+];
+PLANS_INTL.forEach(function (p) {
+  p.ref = BASE_INTL * p.months;
+  p.per = Math.round(p.price / p.months * 10) / 10;
+  p.savePct = Math.round((1 - p.price / p.ref) * 100);
+});
+
+/* Which table is live. Everything that prices or lists an offer goes through
+   these two rather than touching PLANS/EXTRAS directly. */
+function planList(){ return region === 'intl' ? PLANS_INTL : PLANS; }
+function extraList(){ return region === 'intl' ? [] : EXTRAS; }
 
 /* The renders are framed differently — some are head-to-toe, some stop at the
    waist — so giving them all the same box height gives them wildly different
@@ -351,11 +409,19 @@ var OFFER_ART = {
   w12: { player:'p-ronaldo-b', face:'x-homelander', c1:'#0b3b52', c2:'#22d3ee',
          ct:'#06070e', screens:true },
   w15: { player:'p-messi',     face:'x-walter',     c1:'#0d4a5e', c2:'#38bdf8',
-         ct:'#06070e', screens:true }
+         ct:'#06070e', screens:true },
+  /* The international shelf is three cards, so it borrows the three and six
+     and twelve month castings and their place on the blue-to-violet ladder —
+     the row still reads as ascending, just shorter. */
+  i3:  { player:'p-haaland',   face:'x-homelander', c1:'#1b2f7a', c2:'#4f7cff' },
+  i6:  { player:'p-yamal',     face:'x-walter',     c1:'#2b2a84', c2:'#6366f1' },
+  i12: { player:'p-ronaldo',   face:'x-punisher',   c1:'#3d2490', c2:'#8b5cf6' }
 };
 
 function findAny(id){
-  var all = PLANS.concat(EXTRAS);
+  // Every table, not just the live one: a plan chosen just before a region
+  // switch must still resolve while the sheet is being torn down.
+  var all = PLANS.concat(EXTRAS, PLANS_INTL);
   for (var i=0;i<all.length;i++) if (all[i].id===id) return all[i];
   return null;
 }
@@ -404,13 +470,17 @@ var FAQS = [
   {ar:['كيف أحصل على اشتراكي؟','اختر المدة وأدخل اسمك ورقمك — سيفتح الموقع واتساب وطلبك مكتوب بالفعل. أرسله ونرد ببيانات التفعيل خلال دقائق.'],
    fr:['Comment obtenir mon abonnement ?','Choisissez une durée, indiquez votre nom et votre numéro — le site ouvre WhatsApp avec votre commande déjà rédigée. Envoyez-la et nous répondons avec vos accès en quelques minutes.']},
   {ar:['ما الفرق بين الاشتراكات؟','لا فرق في المحتوى إطلاقاً — كل الاشتراكات تفتح المكتبة كاملة. الفرق في المدة فقط: كلما طالت المدة انخفضت التكلفة الشهرية، من 500 أوقية للشهر إلى 200 أوقية شهرياً في اشتراك 15 شهراً.'],
-   fr:['Quelle est la différence entre les abonnements ?','Aucune sur le contenu — chaque abonnement ouvre la bibliothèque complète. Seule la durée change : plus elle est longue, moins le mois revient cher, de 500 MRU pour un mois à 200 MRU par mois sur 15 mois.']},
+   fr:['Quelle est la différence entre les abonnements ?','Aucune sur le contenu — chaque abonnement ouvre la bibliothèque complète. Seule la durée change : plus elle est longue, moins le mois revient cher, de 500 MRU pour un mois à 200 MRU par mois sur 15 mois.'],
+   arI:['ما الفرق بين الاشتراكات؟','لا فرق في المحتوى إطلاقاً — كل الاشتراكات تفتح المكتبة كاملة. الفرق في المدة فقط: 30 دولاراً لثلاثة أشهر، أو 50 لستة أشهر، أو 80 لسنة كاملة — أي من 10 دولارات شهرياً إلى نحو 6.7.'],
+   frI:['Quelle est la différence entre les abonnements ?','Aucune sur le contenu — chaque abonnement ouvre la bibliothèque complète. Seule la durée change : 30 dollars pour trois mois, 50 pour six, 80 pour un an — soit de 10 dollars par mois à environ 6,7.']},
   {ar:['على أي الأجهزة يعمل؟','الشاشات الذكية (سامسونج، إل جي، أندرويد تي في)، هواتف وأجهزة أندرويد، الآيفون والآيباد، وحواسيب ويندوز وماك. حساب واحد يكفي البيت كله ونساعدك في الإعداد.'],
    fr:['Sur quels appareils cela fonctionne-t-il ?','Smart TV (Samsung, LG, Android TV), téléphones et boîtiers Android, iPhone et iPad, ordinateurs Windows et Mac. Un compte suffit pour toute la maison et nous vous aidons à l’installer.']},
   {ar:['هل أحتاج إنترنت سريع؟','لجودة 4K ننصح بحوالي 25 ميجابت. الجودة الكاملة HD تعمل بسلاسة من 10 ميجابت، والبث يتكيّف تلقائياً إذا ضعف الاتصال فلا تتوقف المشاهدة.'],
    fr:['Faut-il une connexion rapide ?','Pour la 4K, comptez environ 25 Mb/s. La Full HD passe très bien à partir de 10 Mb/s, et le flux s’adapte automatiquement si la connexion faiblit.']},
   {ar:['كيف أدفع؟','نرتّب الدفع مباشرة عبر واتساب بالوسائل المتداولة في موريتانيا — بنكيلي أو مصرفي أو سداد أو نقداً. لا يُخصم أي مبلغ عبر الموقع.'],
-   fr:['Comment payer ?','Le paiement se règle directement sur WhatsApp avec les moyens courants en Mauritanie — Bankily, Masrvi, Sedad ou espèces. Rien n’est prélevé via le site.']},
+   fr:['Comment payer ?','Le paiement se règle directement sur WhatsApp avec les moyens courants en Mauritanie — Bankily, Masrvi, Sedad ou espèces. Rien n’est prélevé via le site.'],
+   arI:['كيف أدفع؟','الدفع بعملة USDT على شبكة ترون أو إيثيريوم أو بينانس. تختار الشبكة عند الطلب فيظهر العنوان، ثم ترفق لقطة شاشة من محفظتك. أرسل على الشبكة المعروضة فقط.'],
+   frI:['Comment payer ?','En USDT, sur le réseau Tron, Ethereum ou BNB. Vous choisissez le réseau lors de la commande, l’adresse s’affiche, puis vous joignez la capture de votre portefeuille. N’envoyez que sur le réseau indiqué.']},
   {ar:['ماذا يحدث عند انتهاء الاشتراك؟','نراسلك قبل تاريخ الانتهاء حتى لا ينقطع البث. التجديد برسالة واحدة وتحتفظ بنفس الإعدادات.'],
    fr:['Que se passe-t-il à l’expiration ?','Nous vous écrivons avant la date de fin pour éviter toute coupure. Le renouvellement tient en un message et vous gardez vos réglages.']},
   {ar:['ماذا لو توقف شيء عن العمل؟','راسلنا على واتساب في أي وقت. معظم المشاكل تُحل بتعديل بسيط، وإذا احتاج الخادم إلى تغيير ننقلك فوراً وبدون تكلفة.'],
@@ -444,6 +514,28 @@ var PAY = [
   { id:'sedad',   logo:'pay-sedad',   bg:'#00903f', fg:'#ffffff' },
   { id:'click',   logo:'pay-click',   bg:'#00a0c0', fg:'#06131c' }
 ];
+/* USDT, for orders from outside Mauritania. Same three the wallet issues:
+   Tron, Ethereum and BNB Smart Chain. Ethereum and BNB are both EVM chains,
+   so one address serves both — that is not a copy-and-paste slip.
+
+   These addresses are the whole point of the international flow. A single
+   wrong character sends a customer's money somewhere unrecoverable, so they
+   are written out in full here rather than assembled from parts, and the
+   TRC20 one carries a base58 checksum that was verified against the wallet.
+
+   `label` is what fits on the coloured plate; payNames carries the spoken
+   name for screen readers. Colours are each chain's own. */
+var USDT_EVM = '0x9fa2f4206f143a209551aefe83027deac048d9c3';
+var PAY_USDT = [
+  { id:'trc20', label:'TRC20', net:'Tron (TRC20)',
+    addr:'THzakNPrnqjo3syUrHj1xbRdRezRwVezEv', bg:'#e8352b', fg:'#ffffff' },
+  { id:'erc20', label:'ERC20', net:'Ethereum (ERC20)',
+    addr:USDT_EVM, bg:'#627eea', fg:'#ffffff' },
+  { id:'bep20', label:'BEP20', net:'BNB Smart Chain (BEP20)',
+    addr:USDT_EVM, bg:'#f0b90b', fg:'#0a1020' }
+];
+function payList(){ return region === 'intl' ? PAY_USDT : PAY; }
+
 /* The order matters: it is the order they appear in the sheet. */
 var DEVICES = ['iphone','androidphone','androidtv','samsung','lg','hisense','starsat'];
 
@@ -466,6 +558,7 @@ var STAR = '<svg viewBox="0 0 20 20" width="15" height="15" aria-hidden><path d=
 
 /* ---------------- State ---------------- */
 try { var st = localStorage.getItem('moortv.lang'); if (st==='ar'||st==='fr') lang = st; } catch(e){}
+try { var sr = localStorage.getItem('moortv.region'); if (sr==='mr'||sr==='intl') region = sr; } catch(e){}
 // One subscription per order, so there is nothing to accumulate — just the
 // plan the visitor picked in the order sheet.
 var chosen = null;        // plan id
@@ -485,15 +578,28 @@ function render() {
   document.documentElement.dir = d.dir;
   $('#langTxt').textContent = lang === 'ar' ? 'FR' : 'ع';
   $('#lang').setAttribute('aria-label', lang==='ar' ? 'Passer au français' : 'التبديل إلى العربية');
+  renderGate(d);
 
   $$('[data-i]').forEach(function (el) {
     var v = d, parts = el.getAttribute('data-i').split('.');
     for (var i=0;i<parts.length && v!=null;i++) v = v[parts[i]];
     if (typeof v === 'string') el.textContent = v;
   });
+  // Two lines name a currency out loud, so they need the other wording when
+  // the visitor is not paying in ouguiya.
+  if (region === 'intl'){
+    $('#planFootnote').textContent = d.plans.footnoteIntl;
+    $('#ctaSub').textContent = d.footer.ctaSubIntl;
+    $('#phoneHint').textContent = d.checkout.phoneHintIntl;
+  }
 
+  // The stick is not shipped abroad, so its section, and every link to it,
+  // exists only for Mauritania.
+  var intl = region === 'intl';
+  var devSec = $('#device'); if (devSec) devSec.hidden = intl;
   var links = [['plans','#plans'],['device','#device'],['football','#football'],
-               ['browse','#categories'],['why','#why'],['faq','#faq']];
+               ['browse','#categories'],['why','#why'],['faq','#faq']]
+              .filter(function(l){ return !(intl && l[0] === 'device'); });
   $('#nav').innerHTML = links.map(function(l){ return '<a href="'+l[1]+'">'+esc(d.nav[l[0]])+'</a>'; }).join('');
   $('#menuList').innerHTML = links.map(function(l,i){
     return '<a href="'+l[1]+'" data-close>'+esc(d.nav[l[0]])+'<span>0'+(i+1)+'</span></a>'; }).join('');
@@ -507,7 +613,10 @@ function render() {
   // where it breaks. The data-i pass above skips it, being an array.
   $('#heroL2').innerHTML = d.hero.titleB
     .map(function(w){ return '<span>' + esc(w) + '</span>'; }).join('');
-  $('#fromPrice').textContent = num(BASE);
+  // The cheapest way in, in the currency this visitor actually pays.
+  var cheapest = planList()[0];
+  $('#fromPrice').textContent = num(region === 'intl' ? cheapest.price : BASE);
+  $('#fromCur').textContent = curCode();
 
   // Crests ride along in the marquee so the strip reads as football, not
   // as a generic band of feature words.
@@ -527,12 +636,12 @@ function render() {
 
   // The shelf carries the subscriptions only. The hardware is not a longer
   // subscription, so it has a section of its own further down.
-  $('#planRail').innerHTML = PLANS
-    .concat(EXTRAS.filter(function(e){ return e.kind !== 'device'; }))
+  $('#planRail').innerHTML = planList()
+    .concat(extraList().filter(function(e){ return e.kind !== 'device'; }))
     .map(function(p){ return offerCard(p,d); }).join('');
   $('#planFeat').innerHTML = d.plans.features
     .map(function(f){ return '<li>'+TICK+'<span>'+esc(f)+'</span></li>'; }).join('');
-  renderDevice(d);
+  if (!intl) renderDevice(d);
 
   pWall = undefined;  // the hero was just rebuilt; drop the parallax cache
 
@@ -591,7 +700,9 @@ function render() {
       '</figcaption></figure>'; }).join('');
 
   $('#faqList').innerHTML = FAQS.map(function(f,i){
-    var x = f[lang];
+    // Two answers quote Mauritanian prices and mobile money outright; abroad
+    // those are simply wrong, so those entries carry a second version.
+    var x = (intl && f[lang + 'I']) || f[lang];
     return '<div class="acc'+(i===0?' on':'')+'"><button type="button" aria-expanded="'+(i===0)+'">'+
       '<span class="ix">'+(i<9?'0':'')+(i+1)+'</span>'+
       '<span class="qq">'+esc(x[0])+'</span><span class="pm"></span></button>'+
@@ -599,6 +710,7 @@ function render() {
 
   var fl = d.footer.links;
   $('#fExplore').innerHTML = [[fl.plans,'#plans'],[fl.device,'#device'],[fl.football,'#football'],[fl.cats,'#categories']]
+    .filter(function(x){ return !(intl && x[1] === '#device'); })
     .map(function(x){ return '<li><a href="'+x[1]+'">'+esc(x[0])+'</a></li>'; }).join('');
   $('#fSupport').innerHTML = [[fl.faq,'#faq'],[fl.reviews,'#reviews']]
     .map(function(x){ return '<li><a href="'+x[1]+'">'+esc(x[0])+'</a></li>'; }).join('');
@@ -615,7 +727,8 @@ function render() {
   $('#fab').setAttribute('aria-label', d.footer.orderNow + ' — ' + WA_DISPLAY);
   $('#coNote').textContent = d.checkout.note(WA_DISPLAY);
   $('#cName').placeholder = d.checkout.ph.name;
-  $('#cPhone').placeholder = d.checkout.ph.phone;
+  // A local eight-digit number is the wrong example for someone abroad.
+  $('#cPhone').placeholder = region === 'intl' ? '+33 6 12 34 56 78' : d.checkout.ph.phone;
   $('#cNotes').placeholder = d.checkout.ph.notes;
 
   renderDrift();
@@ -645,9 +758,10 @@ function planLabel(p, d) {
    months, so one drawing compares all eight — and it replaces the portraits
    the tiles used to carry, which said nothing about what was being bought. */
 var METER_MAX = 15;
+function meterMax(){ return region === 'intl' ? 12 : METER_MAX; }
 function meter(months){
-  var out = '';
-  for (var i = 0; i < METER_MAX; i++)
+  var out = '', max = meterMax();
+  for (var i = 0; i < max; i++)
     out += '<i class="' + (i < months ? 'on' : '') + '" style="--i:' + i + '"></i>';
   return '<span class="meter" aria-hidden="true">' + out + '</span>';
 }
@@ -683,7 +797,7 @@ function offerCard(p, d) {
       '<h3 class="dur">'+esc(d.plans.months(p.months))+'</h3>'+
       '<p class="per">'+esc(d.plans.perMonth(p.per))+'</p>'+
       meter(p.months)+
-      '<div class="amt"><b dir="ltr">'+num(p.price)+'</b><s>MRU</s></div>'+
+      '<div class="amt"><b dir="ltr">'+num(p.price)+'</b><s>'+curCode()+'</s></div>'+
       '<p class="save">'+(p.savePct > 0 ? esc(d.plans.save(p.savePct)) : '')+'</p>'+
       '<div class="go"><button class="btn btn-full" data-pick="'+p.id+'">'+
         '<span>'+esc(d.plans.add)+'</span></button></div>'+
@@ -839,7 +953,7 @@ function renderWall(){
 /* ---------------- Order sheet ----------------
    Step one lists the plans, step two takes the details. */
 function renderPicker(d){
-  $('#pickList').innerHTML = PLANS.concat(EXTRAS).map(function(p){
+  $('#pickList').innerHTML = planList().concat(extraList()).map(function(p){
     var bits = [d.plans.perMonth(p.per)];
     if (p.badge === 'popular') bits.push('<em>' + esc(d.plans.popular) + '</em>');
     if (p.savePct > 0) bits.push(esc(d.plans.save(p.savePct)));
@@ -847,7 +961,7 @@ function renderPicker(d){
       '<span><span class="nm">'+esc(planLabel(p,d))+
         (p.best ? ' · ' + esc(d.plans.best) : '')+'</span>'+
         '<span class="sub">'+bits.join(' · ')+'</span></span>'+
-      '<span class="amt" dir="ltr">'+num(p.price)+'<s>MRU</s></span>'+
+      '<span class="amt" dir="ltr">'+num(p.price)+'<s>'+curCode()+'</s></span>'+
       '<span class="go" aria-hidden="true">'+
         '<svg viewBox="0 0 16 16" width="14" height="14" fill="none">'+
         '<path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="1.8" '+
@@ -863,7 +977,7 @@ function renderChosen(){
     '<span class="cbody"><b>'+esc(planLabel(p,d))+'</b>'+
     '<span>'+esc(d.plans.perMonth(p.per))+
       (p.savePct>0 ? ' · '+esc(d.plans.save(p.savePct)) : '')+'</span></span>'+
-    '<span class="cnum" dir="ltr">'+num(p.price)+'<s>MRU</s></span>';
+    '<span class="cnum" dir="ltr">'+num(p.price)+'<s>'+curCode()+'</s></span>';
 }
 
 /* The device chips and the four payment services. Re-run on a language
@@ -877,32 +991,42 @@ function renderCheckout(d){
     return '<button type="button" role="option" aria-selected="'+(chosenDevice===k)+
       '" class="'+(chosenDevice===k?'on':'')+'" data-device="'+k+'">'+
       esc(d.devices[k])+'</button>'; }).join('');
-  $('#payGrid').innerHTML = PAY.map(function(m){
+  // Mobile money arrives as supplied logos; the chains have no artwork, so
+  // they wear their own colour with the network's short name set on it.
+  $('#payGrid').innerHTML = payList().map(function(m){
     var logo = photo(m.logo);
-    return '<button type="button" class="payBtn'+(chosenPay===m.id?' on':'')+
+    return '<button type="button" class="payBtn'+(logo?'':' chain')+(chosenPay===m.id?' on':'')+
       '" role="radio" aria-checked="'+(chosenPay===m.id)+'" data-pay="'+m.id+'"'+
-      ' aria-label="'+esc(d.payNames[m.id])+'" style="--pc:'+m.bg+';--pf:'+m.fg+'">'+
+      ' aria-label="'+esc(d.payNames[m.id])+'" style="--pc:'+m.bg+';--pf:'+m.fg+
+      ';color:'+m.fg+'">'+
       (logo ? '<img src="'+logo+'" alt="'+esc(d.payNames[m.id])+'" loading="lazy" decoding="async">'
-            : '<span style="color:#0a1020;font-weight:800">'+esc(d.payNames[m.id])+'</span>')+
+            : '<span class="payTxt">'+esc(m.label || d.payNames[m.id])+'</span>')+
       '</button>'; }).join('');
   renderPayBox(d);
   renderProof(d);
 }
 
-/* The number, in the chosen service's colours. Hidden until one is chosen. */
+/* Where the money goes, in the chosen method's colours. Hidden until one is
+   chosen. At home that is a phone number; abroad it is a wallet address on a
+   named chain, which is longer, must wrap, and carries a warning — USDT sent
+   on the wrong network is not refused, it is lost. */
 function renderPayBox(d){
   var box = $('#payBox'), m = payMethod();
   if (!m){ box.hidden = true; box.innerHTML = ''; return; }
-  var p = find(chosen);
+  var p = find(chosen), intl = region === 'intl';
   box.hidden = false;
+  box.classList.toggle('wallet', intl);
   box.setAttribute('style', '--pc:' + m.bg + ';--pf:' + m.fg);
   box.innerHTML =
-    '<div class="cap">'+esc(d.checkout.payTo)+' — '+esc(d.payNames[m.id])+'</div>'+
-    '<div class="row"><span class="no" dir="ltr">'+WA_DISPLAY+'</span>'+
+    '<div class="cap">'+esc(intl ? d.checkout.payToWallet : d.checkout.payTo)+
+      ' — '+esc(intl ? m.net : d.payNames[m.id])+'</div>'+
+    '<div class="row"><span class="no'+(intl ? ' addr' : '')+'" dir="ltr">'+
+      esc(intl ? m.addr : WA_DISPLAY)+'</span>'+
       '<button type="button" class="copy" id="payCopy">'+esc(d.checkout.copy)+'</button></div>'+
     (p ? '<div class="amt"><span>'+esc(d.checkout.payAmount)+'</span>'+
          '<b dir="ltr">'+money(p.price)+'</b></div>' : '')+
-    '<div class="note">'+esc(d.checkout.payNote)+'</div>';
+    (intl ? '<div class="warn">'+esc(d.checkout.walletWarn)+'</div>' : '')+
+    '<div class="note">'+esc(intl ? d.checkout.payNoteIntl : d.checkout.payNote)+'</div>';
 }
 
 var proofUrl = null;
@@ -925,8 +1049,17 @@ function closeDeviceList(){
   $('#deviceList').hidden = true;
 }
 
+/* What the copy button puts on the clipboard. Abroad this is the wallet
+   address, and it must be the exact string shown — a customer pastes it
+   straight into their wallet. */
+function copyTarget(){
+  var m = payMethod();
+  if (region === 'intl') return m ? m.addr : '';
+  return WA_E164.replace(/^222/, '');
+}
 function payMethod(){
-  for (var i=0;i<PAY.length;i++) if (PAY[i].id === chosenPay) return PAY[i];
+  var list = payList();
+  for (var i=0;i<list.length;i++) if (list[i].id === chosenPay) return list[i];
   return null;
 }
 
@@ -936,8 +1069,12 @@ function orderMessage(){
   var out=[m.greeting,'',m.intro,'',m.name+': '+(name||'—'),m.phone+': '+(phone||'—')];
   if (chosenDevice) out.push(m.device+': '+d.devices[chosenDevice]);
   out.push('', m.plan+': '+planLabel(p,d), m.total+': '+money(p.price));
-  if (chosenPay) out.push('', m.payMethod+': '+d.payNames[chosenPay],
-                              m.payNum+': '+WA_DISPLAY);
+  if (chosenPay){
+    var pm = payMethod();
+    if (region === 'intl' && pm) out.push('', m.payMethod+': '+d.payNames[chosenPay],
+                                              m.network+': '+pm.net, m.address+': '+pm.addr);
+    else out.push('', m.payMethod+': '+d.payNames[chosenPay], m.payNum+': '+WA_DISPLAY);
+  }
   if (notes) out.push('', m.notes+': '+notes);
   if (orderRef) out.push('', m.ref+': '+orderRef, m.filed);
   else if (proofFile) out.push('', m.proof);
@@ -1078,6 +1215,42 @@ function preloader(){
 }
 
 /* ---------------- Wiring ---------------- */
+/* ---------------- Region ----------------
+   The gate is asked once and remembered. It is not dismissable by tapping
+   away: every price and every payment method behind it depends on the answer,
+   so there is no sensible default to fall through to. The header chip reopens
+   it, because a wrong tap here would otherwise show the wrong currency for
+   good. */
+function renderGate(d){
+  var r = d.region;
+  $('#rgTitle').textContent = r.title;
+  $('#rgSub').textContent = r.sub;
+  $('#rgMr').textContent = r.mr;       $('#rgMrSub').textContent = r.mrSub;
+  $('#rgIntl').textContent = r.intl;   $('#rgIntlSub').textContent = r.intlSub;
+  $('#regionTxt').textContent = region === 'intl' ? 'INT' : 'MR';
+  $('#regionBtn').setAttribute('aria-label', r.change);
+  $('#regionBtn').hidden = !region;
+}
+function openGate(){
+  renderGate(t());
+  $('#regionGate').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function setRegion(r){
+  var changed = region !== r;
+  region = r;
+  try { localStorage.setItem('moortv.region', r); } catch(e){}
+  $('#regionGate').hidden = true;
+  document.body.style.overflow = '';
+  // The tables just swapped underneath: a plan or a payment method picked
+  // under the old region does not exist under the new one.
+  if (changed){
+    chosen = null; chosenPay = null;
+    closeSheet();
+  }
+  render();
+}
+
 function step(which){
   $('#stepPick').classList.toggle('on', which === 'pick');
   $('#stepForm').classList.toggle('on', which === 'form');
@@ -1126,6 +1299,11 @@ document.addEventListener('click', function(e){
     $('#burger').setAttribute('aria-expanded','false'); }
 });
 $('#moBack').addEventListener('click', function(){ step('pick'); });
+$('#regionBtn').addEventListener('click', openGate);
+$('#regionGate').addEventListener('click', function(e){
+  var b = e.target.closest('[data-region]');
+  if (b) setRegion(b.getAttribute('data-region'));
+});
 
 if (!REDUCED) document.addEventListener('pointerdown', function(e){
   var btn=e.target.closest('.btn'); if(!btn) return;
@@ -1187,7 +1365,7 @@ document.addEventListener('click', function(e){
   if (e.target.closest('#payCopy')){
     var btn = $('#payCopy'), d = t();
     var write = navigator.clipboard && navigator.clipboard.writeText
-      ? navigator.clipboard.writeText(WA_E164.replace(/^222/, ''))
+      ? navigator.clipboard.writeText(copyTarget())
       : Promise.reject();
     write.then(function(){ btn.textContent = d.checkout.copied; })
          .catch(function(){ btn.textContent = d.checkout.copied; })
@@ -1253,13 +1431,18 @@ function sendOrder(){
   var btn = $('#coForm button[type=submit]');
   btn.disabled = true;
   shrink(proofFile, function(dataUrl){
-    var d = t(), p = find(chosen);
+    var d = t(), p = find(chosen), pm = payMethod();
     var payload = {
       name: $('#cName').value.trim(), phone: $('#cPhone').value.trim(),
       device: chosenDevice ? T.ar.devices[chosenDevice] : '',
       plan: planLabel(p, T.ar), months: p.months, price: p.price,
       pay: chosenPay || '', notes: $('#cNotes').value.trim(),
-      lang: lang, proof: dataUrl || ''
+      lang: lang, proof: dataUrl || '',
+      // The admin page cannot tell 30 USDT from 30 MRU without these, and
+      // "which chain, which address" is the first thing to check against the
+      // screenshot when confirming an international payment.
+      region: region || 'mr', currency: curCode(),
+      network: pm ? (pm.net || '') : '', address: pm ? (pm.addr || '') : ''
     };
     var done = function(ref){
       orderRef = ref || null;
@@ -1323,4 +1506,6 @@ window.addEventListener('scroll', function(){
 
 render();
 preloader();
+// First visit: nothing can be priced until this is answered.
+if (!region) openGate();
 })();

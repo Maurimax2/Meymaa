@@ -41,10 +41,22 @@ export default async function handler(req, res) {
       proofPath = saved.pathname;
     }
 
+    /* Region decides how to read `price`: 2500 means ouguiya from Mauritania
+       and dollars-in-USDT from anywhere else. Anything unrecognised is filed
+       as 'mr', which is the flow that existed before international orders and
+       so the safe reading of an old or malformed client. */
+    const region = str(b.region, 4) === 'intl' ? 'intl' : 'mr';
+    const currency = region === 'intl' ? 'USDT' : 'MRU';
+
     const order = { ref, at, name, phone,
       device: str(b.device, 40), plan: str(b.plan, 60), months: num(b.months),
       price: num(b.price), pay: str(b.pay, 20), notes: str(b.notes, 600),
-      lang: str(b.lang, 4), proofPath };
+      lang: str(b.lang, 4), proofPath,
+      region, currency,
+      // Which chain the customer says they sent on, and to which address —
+      // the two things to check the screenshot against. Empty for Mauritania.
+      network: region === 'intl' ? str(b.network, 40) : '',
+      address: region === 'intl' ? str(b.address, 64) : '' };
 
     // The timestamp leads the pathname so a prefix list comes back in order.
     await put('orders/' + at + '-' + ref + '.json', JSON.stringify(order), {
