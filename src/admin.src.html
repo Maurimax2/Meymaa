@@ -161,16 +161,23 @@ function render(orders){
 function load(){
   return fetch('/api/orders', { credentials:'same-origin' }).then(function (r){
     if (r.status === 401) { show('lock'); return null; }
-    if (!r.ok) throw new Error('http ' + r.status);
-    return r.json();
+    if (r.ok) return r.json();
+    /* Name the real cause. Storage and the password are separate problems and
+       by this point the password has already been accepted, so a message that
+       blames both sends the reader back to the thing that is working. */
+    return r.json().catch(function(){ return {}; }).then(function (j){
+      throw new Error(j.error === 'storage-not-configured'
+        ? 'مساحة التخزين (Blob) غير مربوطة بالمشروع على Vercel. أنشئ Blob Store، اربطه بالمشروع، ثم أعد النشر.'
+        : 'خطأ ' + r.status + ' — راجع سجلّ الدوال على Vercel.');
+    });
   }).then(function (j){
     if (!j) return;
     show('panel');
     render(j.orders || []);
   }).catch(function (e){
     show('panel');
-    $('#list').innerHTML = '<div class="empty">تعذّر تحميل الطلبات — ' + esc(e.message) +
-      '<br>تأكد من إعداد التخزين ومفتاح الدخول على Vercel.</div>';
+    var msg = e && e.message ? e.message : 'تعذّر الاتصال بالخادم.';
+    $('#list').innerHTML = '<div class="empty">تعذّر تحميل الطلبات<br>' + esc(msg) + '</div>';
   });
 }
 
