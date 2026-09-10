@@ -86,6 +86,16 @@ export function cookieKey(req) {
 export function authed(req) {
   return sessionValid(cookieKey(req)) || keyMatches(req.headers['x-admin-key']);
 }
+/* Connecting a Blob store normally sets BLOB_READ_WRITE_TOKEN. A store
+   connected under a prefix sets <PREFIX>_READ_WRITE_TOKEN instead, and the
+   difference is invisible from the site: the order log simply reports that
+   storage is not configured. So the standard name wins, and any other
+   read-write token in the environment is accepted rather than ignored. */
 export function blobToken() {
-  return process.env.BLOB_READ_WRITE_TOKEN || '';
+  var direct = envStr('BLOB_READ_WRITE_TOKEN');
+  if (direct) return direct;
+  var names = Object.keys(process.env).filter(function (k) {
+    return /_READ_WRITE_TOKEN$/.test(k) && envStr(k);
+  }).sort();
+  return names.length ? envStr(names[0]) : '';
 }
