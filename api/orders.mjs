@@ -35,7 +35,16 @@ export default async function handler(req, res) {
 
   if (req.method !== 'GET') { res.setHeader('Allow','GET, POST, DELETE'); return res.status(405).json({ error:'method' }); }
   if (!authed(req)) return res.status(401).json({ error:'unauthorized' });
-  if (!token) return res.status(503).json({ error:'storage-not-configured' });
+  if (!token) {
+    /* Which variables the function can actually see. NAMES ONLY — never a
+       value — and only to someone already holding the admin password. Without
+       this the page can say storage is missing but not whether the store was
+       never connected, connected under a name the code does not look for, or
+       added after the running build. */
+    var seen = Object.keys(process.env)
+      .filter(function (k) { return /BLOB|TOKEN|VERCEL_ENV/i.test(k); }).sort();
+    return res.status(503).json({ error:'storage-not-configured', env: seen });
+  }
 
   try {
     const { blobs } = await list({ prefix:'orders/', limit:PAGE, token });

@@ -166,9 +166,14 @@ function load(){
        by this point the password has already been accepted, so a message that
        blames both sends the reader back to the thing that is working. */
     return r.json().catch(function(){ return {}; }).then(function (j){
-      throw new Error(j.error === 'storage-not-configured'
-        ? 'مساحة التخزين (Blob) غير مربوطة بالمشروع على Vercel. أنشئ Blob Store، اربطه بالمشروع، ثم أعد النشر.'
-        : 'خطأ ' + r.status + ' — راجع سجلّ الدوال على Vercel.');
+      if (j.error === 'storage-not-configured'){
+        // The variable names the function can see, so the cause is visible
+        // from the page instead of being guessed at from the dashboard.
+        var e = new Error('مساحة التخزين (Blob) غير مربوطة بالمشروع على Vercel.');
+        e.env = j.env || [];
+        throw e;
+      }
+      throw new Error('خطأ ' + r.status + ' — راجع سجلّ الدوال على Vercel.');
     });
   }).then(function (j){
     if (!j) return;
@@ -177,7 +182,13 @@ function load(){
   }).catch(function (e){
     show('panel');
     var msg = e && e.message ? e.message : 'تعذّر الاتصال بالخادم.';
-    $('#list').innerHTML = '<div class="empty">تعذّر تحميل الطلبات<br>' + esc(msg) + '</div>';
+    var env = e && e.env;
+    $('#list').innerHTML = '<div class="empty">تعذّر تحميل الطلبات<br>' + esc(msg) +
+      (env ? '<br><br><b>المتغيّرات المرئية للخادم:</b><br><code style="font-size:11.5px;' +
+             'line-height:1.9;word-break:break-all;direction:ltr;display:block">' +
+             (env.length ? esc(env.join('\n')).split('\n').join('<br>') : '(لا شيء)') +
+             '</code>' : '') +
+      '</div>';
   });
 }
 
