@@ -4,7 +4,7 @@
    URL — even an unguessable one — is the wrong default. They are read back
    only through /api/orders and /api/proof, behind the admin key. */
 import { put } from '@vercel/blob';
-import { str, num, makeRef, blobToken } from './_lib.mjs';
+import { str, num, makeRef, blobConfigured, blobOpts } from './_lib.mjs';
 
 export const config = { maxDuration: 30 };
 
@@ -15,8 +15,8 @@ const KINDS = { 'image/jpeg':'jpg', 'image/jpg':'jpg', 'image/png':'png', 'image
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow','POST'); return res.status(405).json({ error:'method' }); }
-  const token = blobToken();
-  if (!token) return res.status(503).json({ error:'storage-not-configured' });
+  if (!blobConfigured()) return res.status(503).json({ error:'storage-not-configured' });
+  const opts = blobOpts();
 
   const b = req.body && typeof req.body === 'object' ? req.body : {};
   const name = str(b.name, 80);
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       const bytes = Buffer.from(m[2], 'base64');
       if (!bytes.length) return res.status(400).json({ error:'bad-image' });
       const saved = await put('proofs/' + ref + '.' + KINDS[m[1].toLowerCase()], bytes, {
-        access:'private', contentType:m[1].toLowerCase(), token, addRandomSuffix:true
+        access:'private', contentType:m[1].toLowerCase(), addRandomSuffix:true, ...opts
       });
       proofPath = saved.pathname;
     }
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 
     // The timestamp leads the pathname so a prefix list comes back in order.
     await put('orders/' + at + '-' + ref + '.json', JSON.stringify(order), {
-      access:'private', contentType:'application/json', token, addRandomSuffix:false
+      access:'private', contentType:'application/json', addRandomSuffix:false, ...opts
     });
     return res.status(200).json({ ok:true, ref });
   } catch (e) {

@@ -91,6 +91,21 @@ export function authed(req) {
    difference is invisible from the site: the order log simply reports that
    storage is not configured. So the standard name wins, and any other
    read-write token in the environment is accepted rather than ignored. */
+/* A store can be reached two ways. The old way is a static read-write token.
+   The new way gives the function its own identity: Vercel sets BLOB_STORE_ID
+   and the SDK exchanges the deployment's OIDC token for access, with no secret
+   to copy anywhere. Requiring the static token made a perfectly connected
+   store of the second kind report itself as no storage at all. */
+export function blobConfigured() {
+  return blobToken() !== '' || envStr('BLOB_STORE_ID') !== '';
+}
+/* Passed to every blob call. Empty when there is no static token, which is
+   what lets the SDK fall back to the OIDC identity — sending token:'' would
+   instead look like an explicit, and wrong, credential. */
+export function blobOpts() {
+  var t = blobToken();
+  return t ? { token: t } : {};
+}
 export function blobToken() {
   var direct = envStr('BLOB_READ_WRITE_TOKEN');
   if (direct) return direct;

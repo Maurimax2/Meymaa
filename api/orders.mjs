@@ -4,15 +4,13 @@
    GET                → the most recent orders, newest first */
 import { list, get } from '@vercel/blob';
 import { COOKIE, SESSION_TTL, userMatches, keyMatches, authed,
-         makeSession, adminKeySet, blobToken } from './_lib.mjs';
+         makeSession, adminKeySet, blobConfigured, blobOpts } from './_lib.mjs';
 
 export const config = { maxDuration: 30 };
 
 const PAGE = 200;      // plenty for this shop; the list is fetched per record
 
 export default async function handler(req, res) {
-  const token = blobToken();
-
   if (req.method === 'POST') {
     const b = req.body && typeof req.body === 'object' ? req.body : {};
     if (!adminKeySet()) return res.status(503).json({ error:'admin-key-not-set' });
@@ -35,7 +33,7 @@ export default async function handler(req, res) {
 
   if (req.method !== 'GET') { res.setHeader('Allow','GET, POST, DELETE'); return res.status(405).json({ error:'method' }); }
   if (!authed(req)) return res.status(401).json({ error:'unauthorized' });
-  if (!token) {
+  if (!blobConfigured()) {
     /* Which variables the function can actually see. NAMES ONLY — never a
        value — and only to someone already holding the admin password. Without
        this the page can say storage is missing but not whether the store was
@@ -47,12 +45,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { blobs } = await list({ prefix:'orders/', limit:PAGE, token });
+    const opts = blobOpts();
+    const { blobs } = await list({ prefix:'orders/', limit:PAGE, ...opts });
     // The pathname leads with the ISO timestamp, so this sorts by time.
     blobs.sort((a, b) => (a.pathname < b.pathname ? 1 : -1));
     const orders = await Promise.all(blobs.map(async (b) => {
       try {
-        const r = await get(b.pathname, { access:'private', token });
+        const r = await get(b.pathname, { access:'private', ...opts });
         if (!r) return null;
         return JSON.parse(await r.blob.text());
       } catch (e) { return null; }
