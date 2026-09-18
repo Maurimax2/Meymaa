@@ -223,4 +223,7 @@ stays in the git history and in every fork.
   `<link>` tags in `<head>` to drop it; the CSS falls back to system faces.
 - Checkout takes no payment. It records the order and hands it to WhatsApp.
 - Contact details live at the top of `src/app.js`: `WA_DISPLAY`, `WA_E164`,
-  `SNAP`. The same number serves all four payment services.
+  `SNAP`. Bankily settles on its own number, carried as `num` on its entry in
+  `PAY`; the other three fall back to `WA_DISPLAY`. Everything that shows or
+  sends a number reads `payNumber()`, so the panel, the copy button and the
+  WhatsApp message cannot drift apart.

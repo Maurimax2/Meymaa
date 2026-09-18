@@ -128,7 +128,7 @@ ar: {
     device:'الجهاز الذي ستشاهد عليه', devicePick:'اختيار الجهاز', deviceError:'اختر نوع جهازك.',
     pay:'طريقة الدفع', payError:'اختر طريقة الدفع.',
     payTo:'حوّل المبلغ إلى هذا الرقم', payAmount:'المبلغ', copy:'نسخ', copied:'تم النسخ',
-    payNote:'نفس الرقم يعمل مع الأربعة. بعد التحويل أرفق صورة التأكيد بالأسفل.',
+    payNote:'حوّل إلى الرقم الظاهر أعلاه، ثم أرفق صورة التأكيد بالأسفل.',
     /* USDT side. The warning is not decoration: USDT sent on the wrong chain
        does not bounce, it is simply gone. */
     payToWallet:'أرسل المبلغ إلى هذا العنوان', network:'الشبكة',
@@ -265,7 +265,7 @@ fr: {
     device:'Appareil de visionnage', devicePick:'Choisir l’appareil', deviceError:'Choisissez votre type d’appareil.',
     pay:'Moyen de paiement', payError:'Choisissez un moyen de paiement.',
     payTo:'Transférez le montant à ce numéro', payAmount:'Montant', copy:'Copier', copied:'Copié',
-    payNote:'Le même numéro fonctionne pour les quatre. Après le transfert, joignez la preuve ci-dessous.',
+    payNote:'Transférez au numéro affiché ci-dessus, puis joignez la preuve ci-dessous.',
     /* Côté USDT. L’avertissement n’est pas décoratif : des USDT envoyés sur le
        mauvais réseau ne reviennent pas, ils sont perdus. */
     payToWallet:'Envoyez le montant à cette adresse', network:'Réseau',
@@ -510,7 +510,9 @@ function photo(key){ return (key && MXIMG[key]) || ''; }
    The logos are supplied artwork, shown on a white plate: they are made for
    light backgrounds and would disappear into this page otherwise. */
 var PAY = [
-  { id:'bankily', logo:'pay-bankily', bg:'#f5be00', fg:'#0a1020' },
+  // Bankily settles on its own number; the other three share the contact one.
+  // `num` overrides per service — see payNumber().
+  { id:'bankily', logo:'pay-bankily', bg:'#f5be00', fg:'#0a1020', num:'22 50 50 15' },
   { id:'masrvi',  logo:'pay-masrvi',  bg:'#2a0a78', fg:'#ffffff' },
   { id:'sedad',   logo:'pay-sedad',   bg:'#00903f', fg:'#ffffff' },
   { id:'click',   logo:'pay-click',   bg:'#00a0c0', fg:'#06131c' }
@@ -1040,7 +1042,7 @@ function renderPayBox(d){
     '<div class="cap">'+esc(intl ? d.checkout.payToWallet : d.checkout.payTo)+
       ' — '+esc(intl ? m.net : d.payNames[m.id])+'</div>'+
     '<div class="row"><span class="no'+(intl ? ' addr' : '')+'" dir="ltr">'+
-      esc(intl ? m.addr : WA_DISPLAY)+'</span>'+
+      esc(intl ? m.addr : payNumber(m))+'</span>'+
       '<button type="button" class="copy" id="payCopy">'+esc(d.checkout.copy)+'</button></div>'+
     (p ? '<div class="amt"><span>'+esc(d.checkout.payAmount)+'</span>'+
          '<b dir="ltr">'+(intl ? MARK.usdt : '')+money(p.price)+'</b></div>' : '')+
@@ -1071,10 +1073,16 @@ function closeDeviceList(){
 /* What the copy button puts on the clipboard. Abroad this is the wallet
    address, and it must be the exact string shown — a customer pastes it
    straight into their wallet. */
+/* The number this service is paid on. Everything that shows or sends a number
+   goes through here, so a service with its own never disagrees with itself
+   between the panel, the copy button and the WhatsApp message. */
+function payNumber(m){ return (m && m.num) || WA_DISPLAY; }
+
 function copyTarget(){
   var m = payMethod();
   if (region === 'intl') return m ? m.addr : '';
-  return WA_E164.replace(/^222/, '');
+  // Digits only: this is pasted straight into a banking app.
+  return payNumber(m).replace(/\D/g, '');
 }
 function payMethod(){
   var list = payList();
@@ -1092,7 +1100,7 @@ function orderMessage(){
     var pm = payMethod();
     if (region === 'intl' && pm) out.push('', m.payMethod+': '+d.payNames[chosenPay],
                                               m.network+': '+pm.net, m.address+': '+pm.addr);
-    else out.push('', m.payMethod+': '+d.payNames[chosenPay], m.payNum+': '+WA_DISPLAY);
+    else out.push('', m.payMethod+': '+d.payNames[chosenPay], m.payNum+': '+payNumber(pm));
   }
   if (notes) out.push('', m.notes+': '+notes);
   if (orderRef) out.push('', m.ref+': '+orderRef, m.filed);
